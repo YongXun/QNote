@@ -59,7 +59,7 @@ import axios from 'axios'
 		},
 		methods:{
 			 getMessage:async function(){
-				await this.$http.get(`getMessage/${this.username}`)
+				await this.$http.get(`user/getMessage/${this.username}`)
 				.then(result=>{
 					console.log(result);
 					//更新用户数值
@@ -86,7 +86,7 @@ import axios from 'axios'
 			//输入框信息重置
 			input.value = "";
 			//修改数据库信息
-			await this.$http.get(`addTask/${this.username}/${inputValue}`)
+			await this.$http.get(`note/addTask/${this.username}/${inputValue}`)
 			.then(result=>{
 				console.log(inputValue)
 				let noteID = result.data;
@@ -102,7 +102,7 @@ import axios from 'axios'
 		giveUpNote:async function(e){
 			let noteID = e.target.parentElement.parentElement.id;
 			//修改数据库
-			await this.$http.post(`giveUpTask`,{
+			await this.$http.post(`note/giveUpTask`,{
 				username:this.username,
 				noteID:noteID
 			})
@@ -118,12 +118,12 @@ import axios from 'axios'
 			.catch(err=>{
 				console.log(err);
 				return this.$message.error('网络出错!');
-			})		
+			})
 		},
 		completeNote:async function(e){
 			let noteID = e.target.parentElement.parentElement.id;
 			//修改数据库
-			await this.$http.post(`completeTask`,{
+			await this.$http.post(`note/completeTask`,{
 				username:this.username,
 				noteID:noteID
 			}).then(result=>{
@@ -139,11 +139,11 @@ import axios from 'axios'
 			.catch(err=>{
 				console.log(err);
 				return this.$message.error('网络出错!');
-			})	
+			})
 		},
 		deleteNote:async function(e){
 			let noteID = e.target.parentElement.parentElement.id;
-				await this.$http.post(`deleteNote`,{
+				await this.$http.post(`note/deleteNote`,{
 				username:this.username,
 				noteID:noteID
 			})
@@ -157,7 +157,7 @@ import axios from 'axios'
 			.catch(err=>{
 				console.log(err);
 				return this.$message.error('网络出错!');
-			})	
+			})
 		},
 		move:function(){
 			document.querySelector('.welcome-page').style.top = '-100%';
@@ -296,7 +296,7 @@ h3{
 i{
 	margin:10px;
 	width:20px;
-	cursor: pointer;	
+	cursor: pointer;
 }
 
 .comp .task{

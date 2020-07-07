@@ -7,7 +7,8 @@ import './plugins/element.js'
 import axios from 'axios'
 
 Vue.prototype.$http = axios;
-axios.defaults.baseURL = 'http://qnote.qfstudio.net:3000/'
+axios.defaults.baseURL = process.env.VUE_APP_REMOTE || 'https://qnote.qfstudio.net/api/'
+
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 

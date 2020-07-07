@@ -59,7 +59,11 @@ import axios from 'axios'
 		},
 		methods:{
 			 getMessage:async function(){
-				await this.$http.get(`user/getMessage/${this.username}`)
+				await this.$http.get(`user/getMessage/${this.username}`, {
+					params: {
+						token: sessionStorage.getItem('token')
+					}
+				})
 				.then(result=>{
 					console.log(result);
 					//更新用户数值
@@ -86,7 +90,11 @@ import axios from 'axios'
 			//输入框信息重置
 			input.value = "";
 			//修改数据库信息
-			await this.$http.get(`note/addTask/${this.username}/${inputValue}`)
+			await this.$http.get(`note/addTask/${this.username}/${inputValue}`, {
+					params: {
+						token: sessionStorage.getItem('token')
+					}
+				})
 			.then(result=>{
 				console.log(inputValue)
 				let noteID = result.data;
@@ -103,6 +111,7 @@ import axios from 'axios'
 			let noteID = e.target.parentElement.parentElement.id;
 			//修改数据库
 			await this.$http.post(`note/giveUpTask`,{
+				token: sessionStorage.getItem('token'),
 				username:this.username,
 				noteID:noteID
 			})
@@ -124,6 +133,7 @@ import axios from 'axios'
 			let noteID = e.target.parentElement.parentElement.id;
 			//修改数据库
 			await this.$http.post(`note/completeTask`,{
+				token: sessionStorage.getItem('token'),
 				username:this.username,
 				noteID:noteID
 			}).then(result=>{
@@ -144,6 +154,7 @@ import axios from 'axios'
 		deleteNote:async function(e){
 			let noteID = e.target.parentElement.parentElement.id;
 				await this.$http.post(`note/deleteNote`,{
+				token: sessionStorage.getItem('token'),
 				username:this.username,
 				noteID:noteID
 			})

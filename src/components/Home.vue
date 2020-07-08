@@ -59,7 +59,7 @@ import axios from 'axios'
 		},
 		methods:{
 			 getMessage:async function(){
-				await this.$http.get(`user/getMessage/${this.username}`, {
+				await this.$http.get(`user/getMessage`, {
 					params: {
 						token: sessionStorage.getItem('token')
 					}
@@ -90,14 +90,13 @@ import axios from 'axios'
 			//输入框信息重置
 			input.value = "";
 			//修改数据库信息
-			await this.$http.get(`note/addTask/${this.username}/${inputValue}`, {
-					params: {
-						token: sessionStorage.getItem('token')
-					}
+			await this.$http.post(`note/addTask`, {
+					token: sessionStorage.getItem('token'),
+					noteContent: inputValue
 				})
 			.then(result=>{
 				console.log(inputValue)
-				let noteID = result.data;
+				let noteID = result.data.noteID;
 				//修改本地信息
 				this.notcompNoteList.push({noteID,noteContent:inputValue});
 				this.noteNum++;

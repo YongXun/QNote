@@ -1,0 +1,30 @@
+{
+  "id": "1890768",
+  "name": "qing",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "10949890",
+      "name": "上",
+      "font_class": "shang",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "815459",
+      "name": "check",
+      "font_class": "check",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "11903729",
+      "name": "trash",
+      "font_class": "trash",
+      "unicode": "e662",
+      "unicode_decimal": 58978
+    }
+  ]
+}

@@ -10,10 +10,10 @@ export default {
 	components: {
 	},
 	mounted: function () {
-	         //此方法刷新页面时也会执行
-	         window.addEventListener('beforeunload',()=>{
-	            sessionStorage.removeItem('token');
-	        });
+			//此方法刷新页面时也会执行
+			window.addEventListener('beforeunload',()=>{
+			sessionStorage.removeItem('token');
+		});
 	 },
 	created(){
 		let loading = document.querySelector('.loading');

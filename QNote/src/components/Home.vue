@@ -65,7 +65,7 @@ import axios from 'axios'
 					}
 				})
 				.then(result=>{
-					console.log(result);
+					// console.log(result);
 					//更新用户数值
 					this.noteNum = result.data.user.noteNum;
 					this.currentNoteNum = result.data.user.currentNoteNum;

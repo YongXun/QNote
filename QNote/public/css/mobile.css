@@ -1,32 +1,40 @@
 /*login页面*/
-.wrapper{
-	background:url(../img/bg-mobile.jpg) no-repeat;
-	background-size: 100%;
+
+.wrapper {
+    background: url(../img/bg-mobile.jpg) no-repeat;
+    background-size: 100%;
 }
+
 
 /* 登录页 */
-.login-box{
-	width:100%!important;
-	height:300px;
+
+.leftAside {
+    display: none;
 }
 
-.el-form{
-	width:50%!important;
-}
-.el-form-item{
-	width:200px!important;
+.login-box {
+    width: 100%!important;
+    height: 300px;
 }
 
-.home-wrapper{
-	flex-direction: column!important;
+.el-form {
+    width: 50%!important;
 }
 
-.user-info{
-	width:100%!important;
-	height:20%;
+.el-form-item {
+    width: 200px!important;
 }
 
-.user-info p{
-	height: 20%!important;
-	line-height: 100%!important;
+.home-wrapper {
+    flex-direction: column!important;
+}
+
+.user-info {
+    width: 100%!important;
+    height: 20%;
+}
+
+.user-info p {
+    height: 20%!important;
+    line-height: 100%!important;
 }

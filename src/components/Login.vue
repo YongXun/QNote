@@ -2,7 +2,7 @@
 	<div class="wrapper">
 		<div class="leftAside">
 			<div class="outer">
-				<h2>HelloWorld!</h2>
+				<h2>你好,世界!</h2>
 			</div>
 		</div>
 		<div class="login-box">

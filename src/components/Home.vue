@@ -1,21 +1,22 @@
 <template>
-	<div class='home-wrapper'>
-		<div class="welcome-page">
+	<div class='homeWrapper'>
+		<!-- <div class="welcome-page">
 			<p class="welcome-info">欢迎!
 			<span>{{username}}</span>
 			<br>
 			<span>点击下方按钮,开始今天的计划吧!</span>
 			</p>
 			<i class="iconfont icon-shang" @click='move()'></i>
-		</div>
-		<div class="user-info">
+		</div> -->
+		<!-- <div class="user-info">
 			<p>用户名:<span class='username'>{{username}}</span></p>
 			<p>历史目标数:<span class='noteNum'>{{noteNum}}</span></p>
 			<p>现有目标数:<span class='currentNoteNum'>{{currentNoteNum}}</span></p>
 			<p>完成目标数:<span class='completeNoteNum'>{{completeNoteNum}}</span></p>
 			<p>舍弃目标数:<span class='trashNoteNum'>{{giveUpNoteNum}}</span></p>
-		</div>
-		<div class="container">
+		</div> -->
+		<!-- <div class="homeWrapper">
+			<div class="container">
 			<input type="text" class="txtb" placeholder="就是现在,立下你的小目标吧!(输入内容并按下回车)" @keyup.enter="addNote()"/>
 			<h3>未完成目标</h3>
 			<ul class="notcomp">
@@ -36,6 +37,10 @@
 					</div>
 				</li>
 			</ul>
+		</div>
+		</div> -->
+		<div class="homeContainer">
+
 		</div>
 	</div>
 </template>
@@ -65,7 +70,7 @@ import axios from 'axios'
 					}
 				})
 				.then(result=>{
-					console.log(result);
+					// console.log(result);
 					//更新用户数值
 					this.noteNum = result.data.user.noteNum;
 					this.currentNoteNum = result.data.user.currentNoteNum;
@@ -178,12 +183,10 @@ import axios from 'axios'
 
 <style>
 /* 背景 */
-.home-wrapper{
-	display: flex;
-	flex-direction: row;
+.homeWrapper{
 	width: 100%;
 	height: 100%;
-	background: #2f3640;
+	background:url(../../public/img/bg-home-desktop.jpg) center;
 }
 /* 欢迎页 */
 .welcome-page{
@@ -233,6 +236,14 @@ import axios from 'axios'
 		bottom:80px;
 		transform: scale(1.5);
 	}
+}
+
+/* 主区域 */
+.homeContainer{
+	width: 80%;
+	height: 100%;
+	background:rgba(245, 246, 250,.8);
+	margin:0 auto;
 }
 
 /* 用户信息 */

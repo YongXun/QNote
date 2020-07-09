@@ -1,7 +1,7 @@
 * {
     margin: 0;
     padding: 0;
-	color: #fff;
+    color: #fff;
 }
 
 html,
@@ -9,18 +9,21 @@ body {
     width: 100vw;
     height: 100vh;
 }
+
+
 /* 隐藏光标 */
-input{
-	text-align: center;
-	caret-color: transparent;
-	outline: none;
+
+input {
+    text-align: center;
+    caret-color: transparent;
+    outline: none;
 }
 
-.loading{
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+.loading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #app {
@@ -28,14 +31,13 @@ input{
     height: 100%;
 }
 
-.wrapper{
-	 background: url(../img/bg-desktop.jpg) center no-repeat;
+.wrapper {
+    background: url(../img/bg-desktop.jpg) center no-repeat;
 }
 
 
-
-
 /*login页面*/
+
 
 /* 
 .ui-input-box {

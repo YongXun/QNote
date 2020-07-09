@@ -26,17 +26,21 @@
 	.el-form{
 		display: flex;
 		flex-direction: column;
-		justify-content: space-around;
+		justify-content: center;
 		align-items: center;
-		width:400px;
-		height:300px;
+		width:100%;
+		height:45%;
 	}
 	.el-form-item{
-		width:400px;
+		width:80%;
+		border:0;
 	}
 	.el-input{
 		text-align: center;
 		font-size: 1.5em!important;
+	}
+	.el-inpiut input{
+		border:0;
 	}
 	.el-form-item__content{
 		margin:0 auto!important;

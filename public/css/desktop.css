@@ -4,6 +4,7 @@
     margin: 0;
     padding: 0;
     color: #fff;
+    overflow: hidden;
 }
 
 html,
@@ -45,4 +46,23 @@ input {
 
 ::-webkit-scrollbar {
     display: none;
+}
+
+
+/* 主界面 */
+
+.homeWrapper {
+    background: url(../img/bg-home-desktop.jpg);
+}
+
+.homeContainer {
+    width: 80%;
+}
+
+.messageArea {
+    display: flex;
+}
+
+.workArea {
+    width: 70%;
 }

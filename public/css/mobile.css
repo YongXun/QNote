@@ -24,3 +24,23 @@
 .el-form-item {
     width: 200px!important;
 }
+
+
+/* 主页面 */
+
+.homeWrapper {
+    background: url(../img/bg-home-mobile.jpg) no-repeat;
+    background-size: 100%;
+}
+
+.homeContainer {
+    width: 100%;
+}
+
+.messageArea {
+    display: none;
+}
+
+.workArea {
+    width: 100%;
+}

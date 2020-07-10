@@ -1,10 +1,36 @@
 <template>
 	<div class="homeWrapper">
+		<button class="rotate" style="width:100px;height:50px;" @click="turnToBack">button</button>
 		<!-- newNote 输入面板 -->
-		<div class="notePad"></div>
+		<div class="notePad">
+			<div class="inputArea">
+				<h2>添加事务面板</h2>	
+				<i class="iconfont icon-cancel btnBack" @click="hideNotePad"></i>
+			</div>
+		</div>
 		<div class="homeContainer">
-			<div class="messageArea"></div>
-			<div class="workArea"></div>
+			<div class="messageArea">
+				<div class="userMessage">
+					<h2>用户信息</h2>
+				</div>
+				<div class="art">
+					<h2>动画展示</h2>
+				</div>
+			</div>
+			<div class="workArea">
+				<i class="iconfont icon-jia btnAdd" @click="showNotePad"></i>
+				<div class="workAreaView">
+					<!-- 总览面板 -->
+					<div class="front">
+						<h2>总览面板</h2>
+					</div>
+					<!-- 详细面板 -->
+					<div class="back">
+						<i class="iconfont icon-cancel btnBack" @click="backToFront"></i>
+						<h2>详情面板</h2>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -12,27 +38,40 @@
 <style>
 /* 背景 */
 .homeWrapper{
+	position: relative;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
 	height: 100%;
-	background: url(../../public/img/bg-home-desktop.jpg) center;
 }
-
+/* notePad */
+.notePad{
+	position: absolute;
+	top: 0;
+	left:-100%;
+	width:100%;
+	z-index: 1;
+	height: 100%;
+	transition: .5s linear;
+}
+.inputArea{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background: rgba(232, 65, 24,1.0);
+}
 /* main */
 .homeContainer{
 	display: flex;
 	flex-direction: row;
-	width: 80%;
 	height: 100%;
-	background: rgba(47, 54, 64,.6);
+	background: rgba(47, 54, 64,.5);
 }
 
 /* messageArea */
 .messageArea{
-	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -40,10 +79,71 @@
 	height: 100%;
 }
 
+.userMessage{
+	width:100%;
+	height: 40%;
+	border: solid 1px #fff;
+}
+
+.art{
+	width: 100%;
+	height: 60%;
+	border: solid 1px #fff;
+}
+
 /* wordArea */
 .workArea{
-	
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	border: solid 1px #fff;
+	overflow: hidden;
 }
+
+.btnAdd{
+	display: block;
+	text-align: center;
+	width: 100%;
+	height: 10%;
+	font-size: 3em;
+	cursor: pointer;
+}
+
+.workAreaView{
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	overflow: hidden;
+	width: 200%;
+	height: 90%;
+	border: solid 1px #fff;
+	transition: .5s linear;
+}
+
+.front,.back{
+	width: 50%;
+	height: 100%;
+	overflow: hidden;
+	transition: transform 0.5s linear;
+}
+
+.front{
+	background: rgba(47, 54, 64,.5);
+}
+
+.back{
+	background: rgba(251, 197, 49,1.0);
+}
+
+.btnBack{
+	position: absolute;
+	top: 0;
+	right: 10px;
+	font-size: 2.5em;
+	cursor: pointer;
+}
+
 
 </style>
 
@@ -51,7 +151,7 @@
 import axios from 'axios'
 	export default{
 		mounted:function(){
-			this.getMessage();
+			//this.getMessage();
 		},
 		props:['username'],
 		data(){
@@ -178,7 +278,24 @@ import axios from 'axios'
 		},
 		move:function(){
 			document.querySelector('.welcome-page').style.top = '-100%';
-		}
+		},
+		turnToBack:function(){
+			let view = document.querySelector('.workAreaView');
+			view.style.marginLeft = '-100%';
+		},
+		backToFront:function(){
+			let view = document.querySelector('.workAreaView');
+			view.style.marginLeft = '0';
+		},
+		showNotePad:function(){
+			console.log('1')
+			let notePad = document.querySelector('.notePad');
+			notePad.style.left = '0';
+		},
+		hideNotePad:function(){
+			let notePad = document.querySelector('.notePad');
+			notePad.style.left = '-100%';
+		},
 	}
 }
 </script>

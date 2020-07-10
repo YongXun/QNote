@@ -1,6 +1,12 @@
 <template>
-	<div class="homeWrapper"></div>
-	
+	<div class="homeWrapper">
+		<!-- newNote 输入面板 -->
+		<div class="notePad"></div>
+		<div class="homeContainer">
+			<div class="messageArea"></div>
+			<div class="workArea"></div>
+		</div>
+	</div>
 </template>
 
 <style>
@@ -8,9 +14,35 @@
 .homeWrapper{
 	display: flex;
 	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 	width: 100%;
 	height: 100%;
-	background: #2f3640;
+	background: url(../../public/img/bg-home-desktop.jpg) center;
+}
+
+/* main */
+.homeContainer{
+	display: flex;
+	flex-direction: row;
+	width: 80%;
+	height: 100%;
+	background: rgba(47, 54, 64,.6);
+}
+
+/* messageArea */
+.messageArea{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 30%;
+	height: 100%;
+}
+
+/* wordArea */
+.workArea{
+	
 }
 
 </style>

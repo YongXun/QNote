@@ -1,5 +1,10 @@
 <template>
 	<div class="wrapper">
+		<div class="leftAside">
+			<div class="outer">
+				<h2>{{motto}}</h2>
+			</div>
+		</div>
 		<div class="login-box">
 			<header class="login-box-title">
 				<router-link to="/login/signin">登录</router-link>
@@ -15,8 +20,18 @@
 	import Signin from './Signin.vue'
 	import Register from './Register.vue'
 	export default{
+		mounted:async function(){
+			await this.$http(`motto`)
+			.then(result=>{
+				this.motto = result.data.motto;
+			})
+			.catch(result=>{
+				// return this.$message.error('未能成功访问服务器');
+			})
+		},
 		data(){
 			return{
+				motto:'会有那么一天!'
 			}
 		},
 		components:{
@@ -25,27 +40,36 @@
 		}
 	}
 </script>
-
 <style>
 	.wrapper {
+		display: flex;
+		flex-direction: row;
 	    width: 100%;
 	    height: 100%;
 		overflow: scroll;
 	}
+	.leftAside{
+		width:75%;
+		height: 100%;
+	}
+	.outer{
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		background: rgba(47, 54, 64,.8);
+	}
 	.login-box {
-	    position: absolute;
-	    top: 50%;
-	    left: 50%;
+		width: 25%;
+		height: 100%;
 	    display: flex;
 	    flex-direction: column;
 	    align-items: center;
-	    justify-content: space-around;
-	    width: 800px;
-	    height: 400px;
-	    background: #fff;
-	    opacity: .8;
-		border-radius: 20px;
-	    transform: translate(-50%, -50%);
+	    justify-content: center;
+	    background: rgba(220, 221, 225,.6);
 	}
 	.login-box-title a,
 	.login-box-title strong {

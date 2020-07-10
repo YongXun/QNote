@@ -1,10 +1,4 @@
 <template>
-	<!-- 登录表单区域 -->
-	<!-- <form class='ui-input-box ui-logon-box' action="http://localhost:3000/signin" method='post'  @submit='signin'>
-		<input type='text' class='ui-input' placeholder='请输入您的账号' v-model="username">
-		<input type='password' class='ui-input' placeholder='请输入您的密码' v-model='password'>
-		<input type='submit' class='ui-input-submit'  value='登录'>
-	</form> -->
 	<el-form  ref="loginFormRef" :model="loginForm" :rules="loginRule" label-width="80px">
 		<!-- 用户名 -->
 		<el-form-item prop="username">
@@ -26,17 +20,21 @@
 	.el-form{
 		display: flex;
 		flex-direction: column;
-		justify-content: space-around;
+		justify-content: center;
 		align-items: center;
-		width:400px;
-		height:300px;
+		width:100%;
+		height:45%;
 	}
 	.el-form-item{
-		width:400px;
+		width:80%;
+		border:0;
 	}
 	.el-input{
 		text-align: center;
 		font-size: 1.5em!important;
+	}
+	.el-inpiut input{
+		border:0;
 	}
 	.el-form-item__content{
 		margin:0 auto!important;

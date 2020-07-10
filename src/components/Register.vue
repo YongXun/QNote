@@ -1,5 +1,9 @@
 <template>
-	<el-form  ref="registerFormRef" :model="registerForm" :rules="registerFormRule" label-width="80px">
+	<el-form  class="registerForm" ref="registerFormRef" :model="registerForm" :rules="registerFormRule" label-width="80px">
+		<!-- 邮箱 -->
+		<el-form-item prop="email">
+			<el-input class="text" v-model="registerForm.email" placeholder="请输入您的邮箱"></el-input>
+		</el-form-item>
 		<!-- 用户名 -->
 		<el-form-item prop="username">
 			<el-input v-model="registerForm.username" placeholder="请输入您的用户名"></el-input>
@@ -10,86 +14,138 @@
 		</el-form-item>
 		<!-- 确认密码 -->
 		<el-form-item prop="confirmPassword">
-			<el-input v-model="registerForm.confirmPassword" type="password" placeholder="请再次输入您的密码"></el-input>
+			<el-input v-model="registerForm.confirmPassword" type="password" placeholder="请确认您的密码"></el-input>
+		</el-form-item>
+		<!-- 验证码 -->
+		<el-form-item prop="ver">
+			<el-input v-model="registerForm.ver" placeholder="请输入您的验证码"></el-input>
 		</el-form-item>
 		<!-- 按钮 -->
 		<el-form-item>
-			<el-button type="primary" @click='register()'>注册</el-button>
-			<el-button type="info" @click='clear()'>重置</el-button>
+			<el-button type="primary" @click='sendEmail()'>获取验证码</el-button>
+			<el-button type="success" @click='register()'>注册</el-button>
 		</el-form-item>
 	</el-form>
 </template>
+
+<style>
+	.registerForm{
+		height:60%;
+	}
+</style>
 
 <script>
 	import axios from 'axios'
 	export default{
 		data(){
-			let Mark = async (rule,value,callback)=>{
-				//检测用户名长度是否合法
-				if(value.length<6 || value.length>10){return callback(new Error('用户名长度在6与10之间'))}
-				//检测用户名是否已经存在
-				await axios.post(`registerName`,{username:value})
+			// 邮箱验证
+			let checkEmail = async (rule,value,callback) =>{
+				if(value.length === 0){return callback(new Error('请输入您的邮箱'));}
+				//检查邮箱格式是否正确
+				let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+				if(!reg.test(value)){
+					return callback(new Error('邮箱格式不正确'));
+				}
+				// 验证邮箱是否已经被注册
+				await axios.post(`checkEmail`,{email:value})
 				.then(result=>{
-					if(!result.data){
-						return callback(new Error('该用户名已被注册!'));
+					console.log(result.data.valid);
+					if(!result.data.valid){
+						return callback(new Error(`该邮箱已经被注册`));
 					}
-				})
-				.catch(err=>{
-					console.log(err);
+				}).catch(result=>{
+					console.log('nothing');
 				})
 			}
-			let confirm = (rule,value,callback)=>{
+			let checkUsername = async (rule,value,callback)=>{
+				//检测是否输入用户名
+				if(value.length === 0){return callback(new Error('请输入您的用户名'));}
+				//检测用户名长度是否合法
+				if(value.length>10){return callback(new Error('用户名长度不得大于10'))}
+			}
+			let checkPassword = (rule,value,callback)=>{
+				//检测是否输入密码
+				if(value.length === 0){return callback(new Error('请输入您的密码'));}
+				//检测密码长度是否符合要求
+				if(value.length < 6 || value.length >10){
+					return callback(new Error('密码长度在6与10之间'));
+				}
+			}
+			let checkConfirm = (rule,value,callback)=>{
+				//检测是否再次输入密码
+				if(value.length === 0){return callback(new Error('请再次输入您的密码'));}
+				//检测是否两次都输入相同的密码
 				if(value !== this.registerForm.password){
 					return callback(new Error('两次密码不一致'));
 				}
-				return;
 			}
 			return{
 				registerForm:{
+					email:'',
 					username:'',
 					password:'',
 					confirmPassword:'',
+					ver:''
 				},
 				registerFormRule:{
+					email:[
+						{validator:checkEmail,trugger:'blur'}
+					],
 					username:[
-						{required:true,message:"请输入您的用户名",trigger:"blur"},
-						{validator:Mark,trugger:'blur'}
+						{validator:checkUsername,trugger:'blur'}
 					],
 					password:[
-						{required:true,message:"请输入您的密码",trigger:"blur"},
-						{min:6,max:10,message:"密码长度在6与10之间",trugger:"blur"}
+						{validator:checkPassword,trugger:'blur'}
 					],
 					confirmPassword:[
-						{required:true,message:"请再次输入您的密码",trigger:"blur"},
-						{validator:confirm,trugger:'blur'}
+						{validator:checkConfirm,trugger:'blur'}
 					]
 				}
 			}
 		},
 		methods:{
-			clear:function(){
-				this.registerForm.username = '';
-				this.registerForm.password = '';
-				this.registerForm.confirmPassword = '';
+			sendEmail:async function(){
+				this.$refs.registerFormRef.validate(async(valid)=>{
+					//检测四项基本信息是否填写好
+					if(!valid){return this.$message.error('请先填写好您的信息!')};
+					await axios.post(`sendEmail`,{
+						email:email
+					}).then(result=>{
+						console.log(result.data.send);
+						if(result.data.send){
+							this.$message.success('已经向您的邮箱发送验证码!')
+						}
+						else{
+							this.$message.suceess('很抱歉,发送失败!')
+						}
+					})
+					})
 			},
 			register:function(){
-				console.log('click');
-				console.log(this.$refs.registerFormRef)
 				this.$refs.registerFormRef.validate(async(valid)=>{
-					console.log(valid)
+					//检测四项基本信息是否填写好
 					if(!valid){return this.$message.error('请按照要求填写有效信息!')};
-					console.log('123');
-					await this.$http.post('register',this.registerForm)
+					//检测是否输入了验证码
+					if(!registerForm.ver){return this.$message.error('请输入您的邮箱验证码!')}
+					await this.$http.post('register',{
+						email:this.registerForm.email,
+						password:this.registerForm.password,
+						username:this.registerForm.username,
+						ver:this.registerForm.ver
+					})
 					.then((res)=>{
-						console.log(res.data,res.status);
-						this.$message.success('注册成功');
-						//保存token值
-						window.sessionStorage.setItem('token',res.data.token);
-						//通过编程式导航跳转到后台主页,路由地址为home
-						this.$router.push(`/home/${this.registerForm.username}`);
+						if(res.data.valid){
+							this.$message.success('注册成功');
+							//保存token值
+							window.sessionStorage.setItem('token',res.data.token);
+							//通过编程式导航跳转到后台主页,路由地址为home
+							this.$router.push(`/home/${this.registerForm.email}`);
+						}
+						else{
+							return this.$message.error('验证失败,请检查您的验证码');
+						}		
 					})
 					.catch((err)=>{
-						console.log(err)
 						return this.$message.error('未能成功访问服务器,注册失败!');
 					})
 				})

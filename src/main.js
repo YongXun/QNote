@@ -8,6 +8,7 @@ import axios from 'axios'
 
 Vue.prototype.$http = axios;
 axios.defaults.baseURL = process.env.VUE_APP_REMOTE || 'https://qnote.qfstudio.net/api/'
+axios.defaults.baseURL = 'https://yapi.qfstudio.net/mock/24'
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false

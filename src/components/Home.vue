@@ -3,8 +3,7 @@
 		<button class="rotate" style="width:100px;height:50px;" @click="turnToBack">button</button>
 		<!-- newNote 输入面板 -->
 		<div class="notePad">
-			<div class="inputArea">
-				<h2>添加事务面板</h2>	
+			<div class="inputArea">	
 				<i class="iconfont icon-cancel btnBack" @click="hideNotePad"></i>
 			</div>
 		</div>

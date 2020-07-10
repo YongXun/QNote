@@ -1,8 +1,8 @@
 <template>
-	<el-form  ref="loginFormRef" :model="loginForm" :rules="loginRule" label-width="80px">
+	<el-form  class='signinForm' ref="loginFormRef" :model="loginForm" :rules="loginRule" label-width="80px">
 		<!-- 用户名 -->
-		<el-form-item prop="username">
-			<el-input v-model="loginForm.username" placeholder='请输入您的用户名'></el-input>
+		<el-form-item prop="email">
+			<el-input v-model="loginForm.email" placeholder='请输入您的邮箱'></el-input>
 		</el-form-item>
 		<!-- 密码 -->
 		<el-form-item prop="password">
@@ -25,6 +25,9 @@
 		width:100%;
 		height:45%;
 	}
+	.signinForm{
+		height:35%;
+	}
 	.el-form-item{
 		width:80%;
 		border:0;
@@ -44,26 +47,41 @@
 <script>
 	export default{
 		data(){
+			// 邮箱验证
+			let checkEmail = async (rule,value,callback) =>{
+				if(value.length === 0){return callback(new Error('请输入您的邮箱'));}
+				//检查邮箱格式是否正确
+				let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+				if(!reg.test(value)){
+					return callback(new Error('邮箱格式不正确'));
+				}
+			}
+			let checkPassword = (rule,value,callback)=>{
+				//检测是否输入密码
+				if(value.length === 0){return callback(new Error('请输入您的密码'));}
+				//检测密码长度是否符合要求
+				if(value.length < 6 || value.length >10){
+					return callback(new Error('密码长度在6与10之间'));
+				}
+			}
 			return{
 				loginForm:{
-					username:'',
+					email:'',
 					password:''
 				},
 				loginRule:{
-					username:[
-						{required:true,message:"请输入您的用户名",trigger:"blur"},
-						{min:6,max:10,message:"用户名长度在6与10之间",trugger:"blur"}
+					email:[
+						{validator:checkEmail,trugger:'blur'}
 					],
 					password:[
-						{required:true,message:"请输入您的密码",trigger:"blur"},
-						{min:6,max:10,message:"密码长度在6与10之间",trugger:"blur"}
-					]
+						{validator:checkPassword,trugger:'blur'}
+					],
 				}
 			}
 		},
 		methods:{
 			clear:function(){
-				this.loginForm.username = '';
+				this.loginForm.email = '';
 				this.loginForm.password = '';
 			},
 			signin:function(){
@@ -71,16 +89,18 @@
 					if(!valid){return};
 					await this.$http.post('signin',this.loginForm)
 					.then((res)=>{
-						console.log(res.data,res.status);
 						this.$message.success('登录成功');
-						//保存token值
+						//保存token值	
 						window.sessionStorage.setItem('token',res.data.token);
 						//通过编程式导航跳转到后台主页,路由地址为home
-						this.$router.push(`/home/${this.loginForm.username}`);
+						this.$router.push(`/home/${this.loginForm.email}`);
 					})
 					.catch((err)=>{
-						if(err.response.status === 401){return this.$message.error('账号不存在或者密码错误');}
-						else{return this.$message.error('未能成功访问服务器');}
+						if(err.response.status === 401){return this.$message.error('账号不存在!');}
+						if(err.response.status === 402){return this.$message.error('密码错误!');}
+						else{
+							return this.$message.error('未能成功连接服务器')
+						}
 					})
 				})
 		},

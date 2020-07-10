@@ -61,7 +61,7 @@
 					],
 					confirmPassword:[
 						{required:true,message:"请再次输入您的密码",trigger:"blur"},
-						{validator:comfirm,trugger:'blur'}
+						{validator:confirm,trugger:'blur'}
 					]
 				}
 			}

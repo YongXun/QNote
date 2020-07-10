@@ -1,10 +1,4 @@
 <template>
-	<!-- <div class='ui-input-box ui-register-box'>
-		<input type='text' class='ui-input' placeholder='请输入您的账号'>
-		<input type='password' class='ui-input' placeholder='请输入您的密码'>
-		<input type='password' class='ui-input' placeholder='请再次输入您的密码'>
-		<input type='submit' class='ui-input-submit' value='注册'>
-	</div> -->
 	<el-form  ref="registerFormRef" :model="registerForm" :rules="registerFormRule" label-width="80px">
 		<!-- 用户名 -->
 		<el-form-item prop="username">

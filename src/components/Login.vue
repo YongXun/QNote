@@ -25,9 +25,7 @@
 			.then(result=>{
 				this.motto = result.data.motto;
 			})
-			.catch(result=>{
-				// return this.$message.error('未能成功访问服务器');
-			})
+			.catch(result=>{})
 		},
 		data(){
 			return{

@@ -36,6 +36,9 @@ input {
     align-items: center;
 }
 
+
+/* 登录/注册界面 */
+
 .wrapper {
     background: url(../img/bg-desktop.jpg) center no-repeat;
 }

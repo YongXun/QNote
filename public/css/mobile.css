@@ -5,6 +5,10 @@
     background-size: 100%;
 }
 
+.leftAside {
+    display: none;
+}
+
 
 /* 登录页 */
 

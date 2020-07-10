@@ -1,11 +1,11 @@
 <template>
-	<div></div>
+	<div class="homeWrapper"></div>
 	
 </template>
 
 <style>
 /* 背景 */
-.home-wrapper{
+.homeWrapper{
 	display: flex;
 	flex-direction: row;
 	width: 100%;

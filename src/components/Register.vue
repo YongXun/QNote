@@ -22,8 +22,8 @@
 		</el-form-item>
 		<!-- 按钮 -->
 		<el-form-item>
-			<el-button type="primary" @click='sendEmail()'>获取验证码</el-button>
-			<el-button type="success" @click='register()'>注册</el-button>
+			<el-button type="info" @click='sendEmail()'>获取验证码</el-button>
+			<el-button type="info" @click='register()'>注册</el-button>
 		</el-form-item>
 	</el-form>
 </template>

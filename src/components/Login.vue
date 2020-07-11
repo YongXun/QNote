@@ -8,7 +8,7 @@
 		<div class="login-box">
 			<header class="login-box-title">
 				<router-link to="/login/signin">登录</router-link>
-				<strong> | </strong>
+				<strong> / </strong>
 				<router-link to="/login/register">注册</router-link>
 			</header>
 			<router-view></router-view>
@@ -74,5 +74,12 @@
 	    font-size: 2em;
 	    text-decoration: none;
 	    color: #353b48;
+	}
+	.el-button{
+		background: #2f3640;
+		border: 0;
+	}
+	.el-button:hover{
+		background: #dcdde1;
 	}
 </style>

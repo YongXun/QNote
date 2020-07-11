@@ -1,10 +1,14 @@
 <template>
 	<div class="homeWrapper">
-		<button class="rotate" style="width:100px;height:50px;" @click="turnToBack">button</button>
 		<!-- newNote 输入面板 -->
 		<div class="notePad">
-			<div class="inputArea">	
+			<div class="notePadWrap">	
 				<i class="iconfont icon-cancel btnBack" @click="hideNotePad"></i>
+			</div>
+		</div>
+		<div class="userPad">
+			<div class="userPadWrap">
+				<i class="iconfont icon-cancel btnBack" @click="hideUser"></i>
 			</div>
 		</div>
 		<div class="homeContainer">
@@ -17,11 +21,15 @@
 				</div>
 			</div>
 			<div class="workArea">
-				<i class="iconfont icon-jia btnAdd" @click="showNotePad"></i>
+				<div class="btnBox">
+					<i class="iconfont icon-jia btnAdd" @click="showNotePad"></i>
+					<i class="iconfont icon-dingbudaohang-zhangh btnShow" @click="showUser"></i>
+				</div>
 				<div class="workAreaView">
 					<!-- 总览面板 -->
 					<div class="front">
 						<h2>总览面板</h2>
+						<button class="rotate" style="width:100px;height:50px;" @click="turnToBack">button</button>
 					</div>
 					<!-- 详细面板 -->
 					<div class="back">
@@ -45,6 +53,22 @@
 	width: 100%;
 	height: 100%;
 }
+/* userPad */
+.userPad{
+	position: absolute;
+	top: 0;
+	right:-100%;
+	width:100%;
+	z-index: 1;
+	height: 100%;
+	transition: .5s linear;
+}
+.userPadWrap{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background:lightblue;
+}
 /* notePad */
 .notePad{
 	position: absolute;
@@ -55,7 +79,7 @@
 	height: 100%;
 	transition: .5s linear;
 }
-.inputArea{
+.notePadWrap{
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -100,12 +124,19 @@
 	overflow: hidden;
 }
 
-.btnAdd{
-	display: block;
-	text-align: center;
+.btnBox{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 	width: 100%;
 	height: 10%;
-	font-size: 3em;
+}
+
+.btnShow,.btnAdd{
+	display: block;
+	width: 20%;
+	height: 100%;
+	font-size: 3.5em;
 	cursor: pointer;
 }
 
@@ -155,12 +186,26 @@ import axios from 'axios'
 		props:['username'],
 		data(){
 			return{
-				noteNum:0,
-				currentNoteNum:0,
-				completeNoteNum:0,
-				giveUpNoteNum:0,
-				notcompNoteList:[],
-				compNoteList:[]
+				user:{
+					userMessage:{
+						username:'',
+						email:'',
+					},
+					noteMessage:{
+						noteNum:0,
+						currentNoteNum:0,
+						completeNoteNum:0,
+						giveUpNoteNum:0,
+						notcompNoteList:[],
+						compNoteList:[],
+					},
+				note:{
+					noteID:'',
+					noteContent:'',
+					noteRemark:'',
+					done:false
+				}
+				}
 			}
 		},
 		methods:{
@@ -286,8 +331,15 @@ import axios from 'axios'
 			let view = document.querySelector('.workAreaView');
 			view.style.marginLeft = '0';
 		},
+		showUser:function(){
+			let userPad = document.querySelector('.userPad');
+			userPad.style.right = '0';
+		},
+		hideUser:function(){
+			let userPad = document.querySelector('.userPad');
+			userPad.style.right = '-100%';
+		},
 		showNotePad:function(){
-			console.log('1')
 			let notePad = document.querySelector('.notePad');
 			notePad.style.left = '0';
 		},

@@ -10,7 +10,7 @@
 		</el-form-item>
 		<!-- 按钮 -->
 		<el-form-item>
-			<el-button type="primary" @click='signin()'>登录</el-button>
+			<el-button type="info" @click='signin()'>登录</el-button>
 			<el-button type="info" @click='clear()'>重置</el-button>
 		</el-form-item>
 	</el-form>

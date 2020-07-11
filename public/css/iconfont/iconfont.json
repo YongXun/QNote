@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "7674872",
+      "name": "用户",
+      "font_class": "dingbudaohang-zhangh",
+      "unicode": "e713",
+      "unicode_decimal": 59155
+    },
+    {
       "icon_id": "1509738",
       "name": "取消",
       "font_class": "cancel",

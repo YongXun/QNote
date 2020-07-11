@@ -48,6 +48,19 @@
 
 /* 主界面 notePad */
 
+.notePad {
+    background: url(../img/bg-notePad-mobile.jpg);
+    background-size: 100%;
+}
+
 .inputNote {
     width: 100%;
+}
+
+
+/* 主界面 userPad */
+
+.userPad {
+    background: url(../img/bg-userPad-mobile.jpg);
+    background-size: 100%;
 }

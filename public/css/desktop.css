@@ -4,6 +4,7 @@
     margin: 0;
     padding: 0;
     color: #fff;
+    outline: none;
 }
 
 html,
@@ -64,4 +65,23 @@ input {
 
 .workArea {
     width: 70%;
+}
+
+
+/* 主界面 notePad */
+
+.notePad {
+    background: url(../img/bg-notePad-desktop.jpg) center;
+}
+
+.inputNote {
+    margin: auto 0;
+    width: 60%;
+}
+
+
+/* 主界面 userPad */
+
+.userPad {
+    background: url(../img/bg-userPad-desktop.jpg) center;
 }

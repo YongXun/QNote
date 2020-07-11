@@ -10,79 +10,87 @@
     <link rel="stylesheet" type="text/css" href="./css/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="./css/desktop.css" />
     <link rel="stylesheet" type="text/css" media="(max-width:500px)" href="./css/mobile.css" />
-	<link rel="stylesheet" type="text/css" href="./css/iconfont/iconfont.css"/>
-	<style type="text/css">
-		.loading{
-			position: absolute;
-			top:50%;
-			left:50%;
-			width: 200px;
-			height: 200px;
-			transform: translate(-50%,-50%);
-		}
-		.loading p{
-			margin-top:10px;
-			padding-left:5px ;
-			color: #000000;
-			font-size: 2em;
-		}
-		.loading-container{
-			width:120px;
-			height: 120px;
-			position: relative;
-		}
-		.loading-container div{
-			background: blue;
-			height: 40%;
-			width:40%;
-			border-radius: 50%;
-			position: absolute;
-			animation: loading 2s ease infinite;
-		}
-		@keyframes loading{
-			0%,100%{
-				transform: translate(0,0);
-			}
-			25%{
-				transform: translate(150%,0);
-			}
-			50%{
-				transform: translate(150%,150%);
-			}
-			75%{
-				transform: translate(0,150%);
-			}
-		}
-		.loading-container :first-child{
-			background: #C299FC;
-		}
-		.loading-container :nth-child(2){
-			background: #FFD739;
-			animation-delay:-0.5s ;
-		}
-		.loading-container :nth-child(3){
-			background: #9822F9;
-			animation-delay:-1s ;
-		}
-		.loading-container :last-child{
-			background:#6807F9;
-			animation-delay:-1.5s ;
-		}
-		
-	</style>
+    <link rel="stylesheet" type="text/css" href="./css/iconfont/iconfont.css" />
+    <style type="text/css">
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            transform: translate(-50%, -50%);
+        }
+        
+        .loading p {
+            margin-top: 10px;
+            padding-left: 5px;
+            color: #000000;
+            font-size: 2em;
+        }
+        
+        .loading-container {
+            width: 120px;
+            height: 120px;
+            position: relative;
+        }
+        
+        .loading-container div {
+            background: blue;
+            height: 40%;
+            width: 40%;
+            border-radius: 50%;
+            position: absolute;
+            animation: loading 2s ease infinite;
+        }
+        
+        @keyframes loading {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(150%, 0);
+            }
+            50% {
+                transform: translate(150%, 150%);
+            }
+            75% {
+                transform: translate(0, 150%);
+            }
+        }
+        
+        .loading-container :first-child {
+            background: #C299FC;
+        }
+        
+        .loading-container :nth-child(2) {
+            background: #FFD739;
+            animation-delay: -0.5s;
+        }
+        
+        .loading-container :nth-child(3) {
+            background: #9822F9;
+            animation-delay: -1s;
+        }
+        
+        .loading-container :last-child {
+            background: #6807F9;
+            animation-delay: -1.5s;
+        }
+    </style>
 </head>
 
 <body>
-	<div class="loading">
-		<div class="loading-container">
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-		</div>
-		<p>页面加载中</p>
-	</div>
-	<div id="app"></div>
+    <div class="loading">
+        <div class="loading-container">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <p>页面加载中</p>
+    </div>
+    <div id="app"></div>
 </body>
 
 </html>

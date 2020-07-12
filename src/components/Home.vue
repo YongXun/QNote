@@ -350,10 +350,6 @@ import axios from 'axios'
 					this.$message.error(`访问服务器失败!`)
 				})
 			},
-			view:function(note){
-				Object.assign(this.showNote,note);
-				console.log(this.showNote);
-			},
 			addNote:async function(){
 				//获取用户输入信息
 				let noteContent = document.querySelector('.inputNoteContent').value;
@@ -371,14 +367,11 @@ import axios from 'axios'
 					this.user.currentNoteNum++;
 					this.$message.success('添加成功!')
 				}).catch(err=>{
-					this.$message.error('网络出错,添加失败!');
+					this.$message.error('请输入有效信息!');
 				})
 				//输入框重置
 				document.querySelector('.inputNoteContent').value = '';
 				document.querySelector('.inputNoteRemark').value = '';
-			},
-			deleteNote:async function(e){
-
 			},
 			completeNote:async function(noteID){
 				//修改数据库

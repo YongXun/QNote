@@ -55,6 +55,7 @@
 				if(!reg.test(value)){
 					return callback(new Error('邮箱格式不正确'));
 				}
+				callback();
 			}
 			let checkPassword = (rule,value,callback)=>{
 				//检测是否输入密码
@@ -63,6 +64,7 @@
 				if(value.length < 6 || value.length >10){
 					return callback(new Error('密码长度在6与10之间'));
 				}
+				callback();
 			}
 			return{
 				loginForm:{

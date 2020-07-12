@@ -56,12 +56,14 @@
 				}).catch(result=>{
 					console.log('nothing');
 				})
+				callback();
 			}
 			let checkUsername = async (rule,value,callback)=>{
 				//检测是否输入用户名
 				if(value.length === 0){return callback(new Error('请输入您的用户名'));}
 				//检测用户名长度是否合法
 				if(value.length>10){return callback(new Error('用户名长度不得大于10'))}
+				callback();
 			}
 			let checkPassword = (rule,value,callback)=>{
 				//检测是否输入密码
@@ -70,6 +72,7 @@
 				if(value.length < 6 || value.length >10){
 					return callback(new Error('密码长度在6与10之间'));
 				}
+				callback();
 			}
 			let checkConfirm = (rule,value,callback)=>{
 				//检测是否再次输入密码
@@ -78,6 +81,7 @@
 				if(value !== this.registerForm.password){
 					return callback(new Error('两次密码不一致'));
 				}
+				callback();
 			}
 			return{
 				registerForm:{
@@ -109,14 +113,14 @@
 					//检测四项基本信息是否填写好
 					if(!valid){return this.$message.error('请先填写好您的信息!')};
 					await axios.post(`sendEmail`,{
-						email:email
+						email:this.registerForm.email
 					}).then(result=>{
 						console.log(result.data.send);
 						if(result.data.send){
 							this.$message.success('已经向您的邮箱发送验证码!')
 						}
 						else{
-							this.$message.suceess('很抱歉,发送失败!')
+							this.$message.error('很抱歉,发送失败!')
 						}
 					})
 					})
@@ -126,7 +130,7 @@
 					//检测四项基本信息是否填写好
 					if(!valid){return this.$message.error('请按照要求填写有效信息!')};
 					//检测是否输入了验证码
-					if(!registerForm.ver){return this.$message.error('请输入您的邮箱验证码!')}
+					if(!this.registerForm.ver){return this.$message.error('请输入您的邮箱验证码!')}
 					await this.$http.post('register',{
 						email:this.registerForm.email,
 						password:this.registerForm.password,

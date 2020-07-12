@@ -5,6 +5,7 @@
 				<span class="motto">{{motto.hitokoto}}</span>
 				<br>
 				<span class="mottoFrom">{{`——${motto.from_who?motto.from_who:''}《${motto.from}》`}}</span>
+				<div class="hideMottoBtn" @click="hideMotto">进入QNote</div>
 			</div>
 		</div>
 		<div class="login-box">
@@ -34,6 +35,11 @@
 				motto:'会有那么一天!'
 			}
 		},
+		methods:{
+			hideMotto:function(){
+				document.querySelector('.leftAside').style.top = '-100%';
+			}
+		},
 		components:{
 			Signin,
 			Register
@@ -47,27 +53,6 @@
 	    width: 100%;
 	    height: 100%;
 		overflow: scroll;
-	}
-	.leftAside{
-		width:75%;
-		height: 100%;
-	}
-	.outer{
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		width: 100%;
-		height: 100%;
-		background: rgba(47, 54, 64,.8);
-	}
-	.motto,.mottoFrom{
-		width:80%;
-		font-size: 2em;
-	}
-	.mottoFrom{
-		text-align: right;
 	}
 	.login-box {
 		width: 25%;

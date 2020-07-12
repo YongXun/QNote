@@ -44,6 +44,37 @@ input {
     background: url(../img/bg-desktop.jpg) center no-repeat;
 }
 
+.leftAside {
+    width: 75%;
+    height: 100%;
+    transition: .5s linear;
+}
+
+.outer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: rgba(47, 54, 64, .8);
+}
+
+.motto,
+.mottoFrom {
+    width: 80%;
+    font-size: 2em;
+}
+
+.mottoFrom {
+    text-align: right;
+}
+
+.hideMottoBtn {
+    display: none;
+}
+
 ::-webkit-scrollbar {
     display: none;
 }

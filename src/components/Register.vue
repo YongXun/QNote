@@ -17,8 +17,8 @@
 			<el-input v-model="registerForm.confirmPassword" type="password" placeholder="请确认您的密码"></el-input>
 		</el-form-item>
 		<!-- 验证码 -->
-		<el-form-item prop="ver">
-			<el-input v-model="registerForm.ver" placeholder="请输入您的验证码"></el-input>
+		<el-form-item prop="verification">
+			<el-input v-model="registerForm.verification" placeholder="请输入您的验证码"></el-input>
 		</el-form-item>
 		<!-- 按钮 -->
 		<el-form-item>
@@ -89,7 +89,7 @@
 					username:'',
 					password:'',
 					confirmPassword:'',
-					ver:''
+					verification:''
 				},
 				registerFormRule:{
 					email:[
@@ -115,8 +115,8 @@
 					await axios.post(`sendEmail`,{
 						email:this.registerForm.email
 					}).then(result=>{
-						console.log(result.data.send);
-						if(result.data.send){
+						console.log(result.data.valid);
+						if(result.data.valid){
 							this.$message.success('已经向您的邮箱发送验证码!')
 						}
 						else{
@@ -130,12 +130,12 @@
 					//检测四项基本信息是否填写好
 					if(!valid){return this.$message.error('请按照要求填写有效信息!')};
 					//检测是否输入了验证码
-					if(!this.registerForm.ver){return this.$message.error('请输入您的邮箱验证码!')}
+					if(!this.registerForm.verification){return this.$message.error('请输入您的邮箱验证码!')}
 					await this.$http.post('register',{
 						email:this.registerForm.email,
 						password:this.registerForm.password,
 						username:this.registerForm.username,
-						ver:this.registerForm.ver
+						verification:this.registerForm.verification
 					})
 					.then((res)=>{
 						if(res.data.valid){

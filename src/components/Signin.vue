@@ -98,11 +98,7 @@
 						this.$router.push(`/home/${this.loginForm.email}`);
 					})
 					.catch((err)=>{
-						if(err.response.status === 401){return this.$message.error('账号不存在!');}
-						if(err.response.status === 402){return this.$message.error('密码错误!');}
-						else{
-							return this.$message.error('未能成功连接服务器')
-						}
+						return this.$message.error('账号不存在或者密码错误!');
 					})
 				})
 		},

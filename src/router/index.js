@@ -43,11 +43,11 @@ const router = new VueRouter({
 })
 
 //挂载路由导航
-// router.beforeEach((to, from, next) => {
-//     if (to.path === '/login/signin' || to.path === '/login/register') return next();
-//     //获取token
-//     const tokenStr = window.sessionStorage.getItem('token');
-//     if (!tokenStr) { return next('/login'); } else { next(); }
-// })
+router.beforeEach((to, from, next) => {
+    if (to.path === '/login/signin' || to.path === '/login/register') return next();
+    //获取token
+    const tokenStr = window.sessionStorage.getItem('token');
+    if (!tokenStr) { return next('/login'); } else { next(); }
+})
 
 export default router

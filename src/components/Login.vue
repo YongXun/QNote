@@ -2,7 +2,9 @@
 	<div class="wrapper">
 		<div class="leftAside">
 			<div class="outer">
-				<h2>{{motto}}</h2>
+				<span class="motto">{{motto.hitokoto}}</span>
+				<br>
+				<span class="mottoFrom">{{`——${motto.from_who?motto.from_who:''}《${motto.from}》`}}</span>
 			</div>
 		</div>
 		<div class="login-box">
@@ -23,7 +25,7 @@
 		mounted:async function(){
 			await this.$http(`motto`)
 			.then(result=>{
-				this.motto = result.data.motto;
+				this.motto = result.data;
 			})
 			.catch(result=>{})
 		},
@@ -59,6 +61,13 @@
 		width: 100%;
 		height: 100%;
 		background: rgba(47, 54, 64,.8);
+	}
+	.motto,.mottoFrom{
+		width:80%;
+		font-size: 2em;
+	}
+	.mottoFrom{
+		text-align: right;
 	}
 	.login-box {
 		width: 25%;

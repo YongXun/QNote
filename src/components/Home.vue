@@ -8,13 +8,15 @@
 						<input type="text" name="noteContent" class="inputNoteContent" placeholder="就是现在,立下你的小目标吧!"> 
 						<h3>备注</h3>
 						<textarea rows="10" cols="30" class="inputNoteRemark" placeholder="50字内有效"></textarea>
-						<button class="inputSubmit">提交</button>
+						<button class="inputSubmit" @click="addNote">提交</button>
 				</div>
 			</div>
 		</div>
 		<div class="userPad">
 			<div class="userPadWrap">
 				<i class="iconfont icon-cancel btnBack" @click="hideUser"></i>
+				<span>用户名{{user.username}}</span>
+				<span>邮箱{{user.email}}</span>
 			</div>
 		</div>
 		<div class="homeContainer">
@@ -34,13 +36,25 @@
 				<div class="workAreaView">
 					<!-- 总览面板 -->
 					<div class="front">
-						<h2>总览面板</h2>
-						<button class="rotate" style="width:100px;height:50px;" @click="turnToBack">button</button>
+						<article class="todoList">
+							<section v-for="note in noteList" v-bind:key="note.noteID" :style="note.done?'background:#fbc531;':''">
+								<span class="noteContent">{{note.noteContent}}</span>
+								<div class="funBtn">
+									<i class="iconfont icon-chakan" @click="turnToBack(note)"></i>
+									<i :class="note.done?'':'iconfont icon-check'" @click="completeNote(note.noteID)"></i>
+									<i class="iconfont icon-trash" @click="deleteNote(note)"></i>
+								</div>
+							</section>
+						</article>
 					</div>
 					<!-- 详细面板 -->
 					<div class="back">
 						<i class="iconfont icon-cancel btnBack" @click="backToFront"></i>
-						<h2>详情面板</h2>
+						<div class="showNoteBox">
+							<p class="showNoteTitle">{{showNote.noteContent}}</p>
+							<h2>备注</h2>
+							<div class="showNoteRemark">{{showNote.noteRemark}}</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -72,6 +86,10 @@
 
 .userPadWrap{
 	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	width: 100%;
 	height: 100%;
 	background:rgba(47, 54, 64,.8);
@@ -89,7 +107,7 @@
 }
 .notePadWrap{
 	display: flex;
-	flex-flow: row;
+	flex-direction: row;
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -139,6 +157,7 @@
 
 /* messageArea */
 .messageArea{
+	display: none;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -206,8 +225,51 @@
 	background: rgba(47, 54, 64,.5);
 }
 
+.todoList{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	background: inherit;
+	margin: auto;
+	overflow: scroll;
+}
+
+.todoList section{
+	display: flex;
+	flex-direction:row;
+	justify-content: space-between;
+	width: 100%;
+	height: 50px;
+	font-size: 2em;
+	line-height: 50px;
+	margin:10px 0;
+	padding:0 10px;
+	border: solid 1px #fff;
+}
+
+.todoList section .funBtn{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	width: 20%;
+	height:50px;
+	font-size: 50px;
+	line-height: 50px;
+}
+
+.todoList section .funBtn i{
+	cursor: pointer;
+}
+
+
 .back{
-	background: rgba(251, 197, 49,1.0);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background: inherit;
 }
 
 .btnBack{
@@ -218,6 +280,27 @@
 	cursor: pointer;
 }
 
+.showNoteBox{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 80%;
+	height: 80%;
+}
+
+.showNoteTitle{
+	width:80%;
+	font-size: 2em;
+	border-bottom: solid 3px #fff;
+}
+
+.showNoteRemark{
+	width: 80%;
+	height: 80%;
+	font-size:1.5em ;
+	margin-top: 10px;
+}
 
 </style>
 
@@ -225,202 +308,163 @@
 import axios from 'axios'
 	export default{
 		mounted:function(){
-			//this.getMessage();
+			this.getMessage();
 		},
 		props:['username'],
 		data(){
 			return{
+				token:sessionStorage.getItem('token'),
 				user:{
-					token:'',
-					userMessage:{
-						username:'',
-						email:'',
-						noteNum:0,
-						currentNoteNum:0,
-						completeNoteNum:0,
-						giveUpNoteNum:0,
-					},		
-				note:{
-					noteID:'',
+					username:'',
+					email:'',
+					noteNum:0,
+					currentNoteNum:0,
+					completeNoteNum:0,
+					giveUpNoteNum:0,		
+				},
+				noteList:[],
+				showNote:{
+					noteID:0,
 					noteContent:'',
 					noteRemark:'',
 					done:false
-				},
-				notCompNoteList:[],
-				compNoteList:[],
 				}
 			}
 		},
 		methods:{
-			//  getMessage:async function(){
-			// 	await this.$http.get(`user/getMessage`, {
-			// 		params: {
-			// 			token: sessionStorage.getItem('token')
-			// 		}
-			// 	})
-			// 	.then(result=>{
-			// 		console.log(result);
-			// 		//更新用户数值
-			// 		this.noteNum = result.data.user.noteNum;
-			// 		this.currentNoteNum = result.data.user.currentNoteNum;
-			// 		this.giveUpNoteNum = result.data.user.giveUpNoteNum;
-			// 		this.completeNoteNum = result.data.user.completeNoteNum;
-			// 		//更新用户事务列表
-			// 		result.data.note.forEach(async value=>{
-			// 			let noteID = value.noteID;
-			// 			let noteContent = value.noteContent;
-			// 			if(value.done === false){
-			// 				this.notcompNoteList.push({noteID,noteContent});
-			// 			}
-			// 			else{this.compNoteList.push(value)};
-			// 		})
-			// 	})
-			// 	.catch(err=>console.log(err))
-			// },
-			getMessage:function(){
-			//获取当前用户token值
-			let token = sessionStorage.getItem('token');
-			//发送http请求,获取用户信息
-			this.$http.get(`user/getMessagge`,{
-				params:{token:token}
-			}).then(res=>{
-				//访问成功,接受数据
-				if(res.status === 200){
-					//复制对象
-					Object.assign(this.user,res.data.user);
-					res.data.note.forEach((value)=>{
-						if(value.done === false){
-							//未完成事务入栈
-							this.notCompNoteList.push(value)
-						}
-						else{
-							//已完成事务入栈
-							this.compNoteList.push(value);
+			getMessage:async function(){
+				//发送http请求,获取用户信息
+				await this.$http.get(`user/getMessage`,{
+					params:{token:this.token}
+				}).then(res=>{
+					//访问成功,接受数据
+					if(res.status === 200){
+						//复制对象
+						Object.assign(this.user,res.data.user);
+						res.data.note.forEach((value)=>{
+							this.noteList.push(value)
+						})
+					}
+				}).catch(err=>{
+					console.log(err)
+					this.$message.error(`访问服务器失败!`)
+				})
+			},
+			view:function(note){
+				Object.assign(this.showNote,note);
+				console.log(this.showNote);
+			},
+			addNote:async function(){
+				//获取用户输入信息
+				let noteContent = document.querySelector('.inputNoteContent').value;
+				let noteRemark = document.querySelector('.inputNoteRemark').value.substring(0,50);
+				noteRemark = noteRemark?noteRemark:`暂无备注`;
+				await this.$http.post(`note/addTask`,{
+					token:this.token,
+					noteContent:noteContent,
+					noteRemark:noteRemark
+				}).then(res=>{
+					let noteID = res.data.noteID
+					//修改本地信息
+					this.noteList.push({noteID,noteContent,noteRemark});
+					this.user.noteNum++;
+					this.user.currentNoteNum++;
+					this.$message.success('添加成功!')
+				}).catch(err=>{
+					this.$message.error('网络出错,添加失败!');
+				})
+				//输入框重置
+				document.querySelector('.inputNoteContent').value = '';
+				document.querySelector('.inputNoteRemark').value = '';
+			},
+			deleteNote:async function(e){
+
+			},
+			completeNote:async function(noteID){
+				//修改数据库
+				await this.$http.post(`note/completeTask`,{
+					token: this.token,
+					username:this.user.username,
+					noteID:noteID
+				})
+				.then(res=>{
+					//修改本地数据
+					this.noteList.forEach(value=>{
+						if(value.noteID === noteID){
+							value.done = true;
 						}
 					})
+					this.completeNoteNum++;
+					this.currentNoteNum--;
+				})
+			},
+			deleteNote:async function(note){
+				console.log(note.done)
+				//事务已经完成,删除事务
+				if(note.done){
+					//修改数据库
+					await this.$http.post(`note/deleteNote`,{
+						token: this.token,
+						username:this.user.username,
+						noteID:note.noteID
+					})
+					.then(res=>{
+						//修改本地数据
+						this.noteList.forEach((value,index,arr)=>{
+							if(value.noteID === note.noteID){
+								console.log(1)
+								arr.splice(index,1);
+							}
+						})
+					})					
 				}
-			}).catch(err=>{
-				//测试
-				console.log(err)
-				this.$message.error(`访问服务器失败!`)
-			})
-		},
-		addNote:function(){
-			//获取用户输入信息
-		},
-		// addNote:async function(){
-		// 	//获取输入信息
-		// 	let input = document.querySelector('input');
-		// 	let inputValue = input.value;
-		// 	//输入框信息重置
-		// 	input.value = "";
-		// 	//修改数据库信息
-		// 	await this.$http.post(`note/addTask`, {
-		// 			token: sessionStorage.getItem('token'),
-		// 			noteContent: inputValue
-		// 		})
-		// 	.then(result=>{
-		// 		console.log(inputValue)
-		// 		let noteID = result.data.noteID;
-		// 		//修改本地信息
-		// 		this.notcompNoteList.push({noteID,noteContent:inputValue});
-		// 		this.noteNum++;
-		// 		this.currentNoteNum++;
-		// 	}).catch(err=>{
-		// 		console.log(err);
-		// 		return this.$message.error('网络出错!');
-		// 	})
-		// },
-		// giveUpNote:async function(e){
-		// 	let noteID = e.target.parentElement.parentElement.id;
-		// 	//修改数据库
-		// 	await this.$http.post(`note/giveUpTask`,{
-		// 		token: sessionStorage.getItem('token'),
-		// 		username:this.username,
-		// 		noteID:noteID
-		// 	})
-		// 	.then(result=>{
-		// 		this.notcompNoteList.forEach((value,index,arr)=>{
-		// 			if(value.noteID.toString() === noteID){
-		// 				arr.splice(index,1);
-		// 			}
-		// 		})
-		// 		this.giveUpNoteNum++;
-		// 		this.currentNoteNum--;
-		// 	})
-		// 	.catch(err=>{
-		// 		console.log(err);
-		// 		return this.$message.error('网络出错!');
-		// 	})
-		// },
-		// completeNote:async function(e){
-		// 	let noteID = e.target.parentElement.parentElement.id;
-		// 	//修改数据库
-		// 	await this.$http.post(`note/completeTask`,{
-		// 		token: sessionStorage.getItem('token'),
-		// 		username:this.username,
-		// 		noteID:noteID
-		// 	}).then(result=>{
-		// 		this.notcompNoteList.forEach((value,index,arr)=>{
-		// 			if(value.noteID.toString() === noteID){
-		// 				this.compNoteList.push({noteID:noteID,noteContent:value.noteContent})
-		// 				arr.splice(index,1);
-		// 			}
-		// 		})
-		// 		this.completeNoteNum++;
-		// 		this.currentNoteNum--;
-		// 	})
-		// 	.catch(err=>{
-		// 		console.log(err);
-		// 		return this.$message.error('网络出错!');
-		// 	})
-		// },
-		// deleteNote:async function(e){
-		// 	let noteID = e.target.parentElement.parentElement.id;
-		// 		await this.$http.post(`note/deleteNote`,{
-		// 		token: sessionStorage.getItem('token'),
-		// 		username:this.username,
-		// 		noteID:noteID
-		// 	})
-		// 	.then(result=>{
-		// 		this.compNoteList.forEach((value,index,arr)=>{
-		// 			if(value.noteID.toString() === noteID){
-		// 				arr.splice(index,1);
-		// 			}
-		// 		})
-		// 	})
-		// 	.catch(err=>{
-		// 		console.log(err);
-		// 		return this.$message.error('网络出错!');
-		// 	})
-		// },
-		move:function(){
-			document.querySelector('.welcome-page').style.top = '-100%';
-		},
-		turnToBack:function(){
-			let view = document.querySelector('.workAreaView');
-			view.style.marginLeft = '-100%';
-		},
-		backToFront:function(){
-			let view = document.querySelector('.workAreaView');
-			view.style.marginLeft = '0';
-		},
-		showUser:function(){
-			let userPad = document.querySelector('.userPad');
-			userPad.style.right = '0';
-		},
-		hideUser:function(){
-			let userPad = document.querySelector('.userPad');
-			userPad.style.right = '-100%';
-		},
-		showNotePad:function(){
-			let notePad = document.querySelector('.notePad');
-			notePad.style.left = '0';
-		},
-		hideNotePad:function(){
-			let notePad = document.querySelector('.notePad');
-			notePad.style.left = '-100%';
-		},
+				//事务尚未完成,放弃事务
+				else{
+					await this.$http.post(`note/giveUpTask`,{
+						token: this.token,
+						username:this.user.username,
+						noteID:note.noteID
+					})
+					.then(res=>{
+						this.noteList.forEach((value,index,arr)=>{
+							if(value.noteID === note.noteID){
+								console.log(2);
+								arr.splice(index,1);
+							}
+						})
+					})
+					this.giveUpNoteNum++;
+					this.currentNoteNum--;
+				}
+			},
+			move:function(){
+				document.querySelector('.welcome-page').style.top = '-100%';
+			},
+			turnToBack:function(note){
+				Object.assign(this.showNote,note);
+				let view = document.querySelector('.workAreaView');
+				view.style.marginLeft = '-100%';
+			},
+			backToFront:function(){
+				let view = document.querySelector('.workAreaView');
+				view.style.marginLeft = '0';
+			},
+			showUser:function(){
+				let userPad = document.querySelector('.userPad');
+				userPad.style.right = '0';
+			},
+			hideUser:function(){
+				let userPad = document.querySelector('.userPad');
+				userPad.style.right = '-100%';
+			},
+			showNotePad:function(){
+				let notePad = document.querySelector('.notePad');
+				notePad.style.left = '0';
+			},
+			hideNotePad:function(){
+				let notePad = document.querySelector('.notePad');
+				notePad.style.left = '-100%';
+			},
 	}
 }
 </script>

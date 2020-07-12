@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "3640168",
+      "name": "查看",
+      "font_class": "chakan",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "5809145",
+      "name": "编写",
+      "font_class": "bianxie",
+      "unicode": "e67b",
+      "unicode_decimal": 59003
+    },
+    {
+      "icon_id": "8348163",
+      "name": "下载",
+      "font_class": "xiazai",
+      "unicode": "e723",
+      "unicode_decimal": 59171
+    },
+    {
       "icon_id": "7674872",
       "name": "用户",
       "font_class": "dingbudaohang-zhangh",

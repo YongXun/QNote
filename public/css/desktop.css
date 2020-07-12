@@ -52,11 +52,12 @@ input {
 /* 主界面 */
 
 .homeWrapper {
+    overflow: hidden;
     background: url(../img/bg-home-desktop.jpg);
 }
 
 .homeContainer {
-    width: 80%;
+    width: 70%;
 }
 
 .messageArea {
@@ -64,7 +65,7 @@ input {
 }
 
 .workArea {
-    width: 70%;
+    width: 100%;
 }
 
 

@@ -18,8 +18,6 @@
 				<i class="iconfont icon-cancel btnBack" @click="hideUser"></i>
 				<div class="userShow">
 					<header>
-						<el-avatar></el-avatar>
-						<br>
 						<span>用户名{{user.username}}</span>
 					</header>
 				</div>
@@ -105,10 +103,6 @@
 	background:rgba(47, 54, 64,.8);
 }
 
-.el-avatar{
-	width: 150px;
-	height: 150px;
-}
 /* notePad */
 .notePad{
 	position: absolute;
@@ -316,13 +310,6 @@
 	margin-top: 10px;
 }
 
-/* 响应式 */
-@media screen and (max-width:500px){
-	.el-avatar {
-    width: 100px;
-    height: 100px;
-}
-}
 </style>
 
 <script>

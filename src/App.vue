@@ -13,6 +13,15 @@ export default {
 			//此方法刷新页面时也会执行
 			window.addEventListener('beforeunload',()=>{
 			// sessionStorage.removeItem('token');
+			//解决H5键盘弹起webview缩小的问题,高度维持不变,被键盘遮住的内容隐藏起来.
+			const firstHeight = document.querySelector('.body').style.height;
+			window.onresize = ()=>{
+				let body = document.querySelector('.body');
+				if(body.style.height < firstHeight)
+				{
+					body.style.height = firstHeight;
+				}
+			}
 		});
 	 },
 	created(){
@@ -31,5 +40,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  overflow: hidden;
 }
 </style>

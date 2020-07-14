@@ -6,6 +6,69 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "258634",
+      "name": "邮箱",
+      "font_class": "tubiao209",
+      "unicode": "e63f",
+      "unicode_decimal": 58943
+    },
+    {
+      "icon_id": "5022863",
+      "name": "验证码",
+      "font_class": "yanzhengma",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "14421790",
+      "name": "退出",
+      "font_class": "tuichu_huaban1",
+      "unicode": "e686",
+      "unicode_decimal": 59014
+    },
+    {
+      "icon_id": "6844457",
+      "name": "睁眼",
+      "font_class": "zhengyan",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "993704",
+      "name": "清除",
+      "font_class": "qingchu1",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "9575925",
+      "name": "闭眼",
+      "font_class": "biyan",
+      "unicode": "e6a8",
+      "unicode_decimal": 59048
+    },
+    {
+      "icon_id": "14421416",
+      "name": "眼睛",
+      "font_class": "yanjing_huaban1",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
+      "icon_id": "5285250",
+      "name": "清除",
+      "font_class": "qingchu",
+      "unicode": "e6f1",
+      "unicode_decimal": 59121
+    },
+    {
+      "icon_id": "730816",
+      "name": "右",
+      "font_class": "icon-arrow-right4",
+      "unicode": "e67c",
+      "unicode_decimal": 59004
+    },
+    {
       "icon_id": "3640168",
       "name": "查看",
       "font_class": "chakan",

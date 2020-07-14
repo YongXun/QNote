@@ -8,13 +8,16 @@
 				<div class="hideMottoBtn" @click="hideMotto">进入QNote</div>
 			</div>
 		</div>
-		<div class="login-box">
-			<header class="login-box-title">
-				<router-link to="/login/signin">登录</router-link>
-				<strong> / </strong>
-				<router-link to="/login/register">注册</router-link>
-			</header>
-			<router-view></router-view>
+		<div class="rightAside">
+			<div class="loginBox">
+				<h2 style="color:#353b48;">QNote</h2>
+				<router-view></router-view>
+			</div>
+			<footer class="loginBoxChoose">
+					<router-link to="/login/signin">用户登录</router-link>
+					<strong> | </strong>
+					<router-link to="/login/register">用户注册</router-link>
+			</footer>
 		</div>
 	</div>
 </template>
@@ -54,26 +57,55 @@
 	    height: 100%;
 		overflow: scroll;
 	}
-	.login-box {
-		width: 25%;
+
+	.leftAside{
 		height: 100%;
+		transition: .5s linear;
+	}
+
+	.outer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: rgba(47, 54, 64, .8);
+	}
+
+	.motto,.mottoFrom{
+		width: 80%;
+	}
+
+	.rightAside{
+		position: relative;
 		display: flex;
-	    flex-direction: column;
-	    align-items: center;
-	    justify-content: center;
-	    background: rgba(220, 221, 225,.6);
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-start;
+		height: 100%;
+		background:#fff;
 	}
-	.login-box-title a,
-	.login-box-title strong {
-	    font-size: 2em;
-	    text-decoration: none;
-	    color: #353b48;
+
+	.loginBox{
+		position: absolute;
+		width: 100%;
+		height: 50%;
 	}
-	.el-button{
-		background: #2f3640;
-		border: 0;
+
+	.loginBoxChoose{
+		position: absolute;
+		bottom: 20px;
 	}
-	.el-button:hover{
-		background: #dcdde1;
+
+	.loginBoxChoose a,
+	.loginBoxChoose strong {
+		text-decoration: none;
+		color: #353b48;
+	}
+
+	.loginBoxChoose .router-link-active{
+		color:#c23616;
 	}
 </style>

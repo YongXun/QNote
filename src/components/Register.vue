@@ -1,160 +1,203 @@
 <template>
-	<el-form  class="registerForm" ref="registerFormRef" :model="registerForm" :rules="registerFormRule" label-width="80px">
-		<!-- 邮箱 -->
-		<el-form-item prop="email">
-			<el-input class="text" v-model="registerForm.email" placeholder="请输入您的邮箱"></el-input>
-		</el-form-item>
-		<!-- 用户名 -->
-		<el-form-item prop="username">
-			<el-input v-model="registerForm.username" placeholder="请输入您的用户名"></el-input>
-		</el-form-item>
-		<!-- 密码 -->
-		<el-form-item prop="password">
-			<el-input v-model="registerForm.password" type="password" placeholder="请输入您的密码"></el-input>
-		</el-form-item>
-		<!-- 确认密码 -->
-		<el-form-item prop="confirmPassword">
-			<el-input v-model="registerForm.confirmPassword" type="password" placeholder="请确认您的密码"></el-input>
-		</el-form-item>
-		<!-- 验证码 -->
-		<el-form-item prop="verification">
-			<el-input v-model="registerForm.verification" placeholder="请输入您的验证码"></el-input>
-		</el-form-item>
-		<!-- 按钮 -->
-		<el-form-item>
-			<el-button type="info" @click='sendEmail()'>获取验证码</el-button>
-			<el-button type="info" @click='register()'>注册</el-button>
-		</el-form-item>
-	</el-form>
+	<div class="registerForm">
+		<main>
+			<!-- 邮箱 -->
+			<div class="inputEmail">
+				<input v-model="email" @blur="checkEmail" class="inputLine-Email" type="text" placeholder="请输入您的邮箱" autocomplete="false">
+				<button :class="{'sendEmail':true,'sendEmail-active':emailValid}" @click="sendEmail">发送验证</button>
+			</div>
+			<!-- 用户名 -->
+			<div class="inputBar inputUsername">
+				<i class="icon iconfont icon-dingbudaohang-zhangh"></i>
+				<input v-model="username" @keyup="usernameValidate" class="inputLine " type="text" placeholder="请输入您的用户名" autocomplete="false">
+				<i class="icon iconfont icon-qingchu1" @click="clearUsername"></i>
+			</div>
+			<!-- 密码 -->
+			<div class="inputBar inputPassword">
+				<i @click="changeVisiable" :class="{'icon':true,'iconfont':true,'icon-zhengyan':!passwordVisiable,'icon-biyan':passwordVisiable}"></i>
+				<input v-model="password" @keyup="passwordValidate" class="inputLine "  :type="passwordVisiable?'text':'password'" placeholder="请输入您的密码">
+				<i class="icon iconfont icon-qingchu1"  @click="clearPassword"></i>
+			</div>
+			<!-- 确认密码 -->
+			<div class="inputBar inputConfirmPassword">
+				<i @click="changeVisiable" :class="{'icon':true,'iconfont':true,'icon-zhengyan':!passwordVisiable,'icon-biyan':passwordVisiable}"></i>
+				<input v-model="confirmPassword" @keyup="confirmPasswordValidate" class="inputLine "  :type="passwordVisiable?'text':'password'" placeholder="再次输入您的密码">
+				<i class="icon iconfont icon-qingchu1"  @click="clearConfirmPassword"></i>
+			</div>
+			<!-- 验证码 -->
+			<div class="inputBar inputVerification">
+				<i @click="changeVisiable" class="icon iconfont icon-yanzhengma"></i>
+				<input v-model="verification" @keyup="verificationValidate" class="inputLine "  :type="passwordVisiable?'text':'password'" placeholder="请输入您的验证码">
+				<i class="icon iconfont icon-qingchu1"  @click="clearVerification"></i>
+			</div>
+			<footer>
+			<span class="registerFormInfo">{{registerInfo}}</span>
+			<br>
+			<button @click="register" v-bind:class="{'formBtn':true,'formBtn-active':(emailValid&passwordValid&passwordValid&confirmPasswordValid&verificationValid)}"><i class="iconfont icon-icon-arrow-right4"></i></button>
+		</footer>	
+		</main>
+	</div>
 </template>
 
 <style>
-	.registerForm{
-		height:60%;
-	}
+.inputEmail{
+	margin:5px auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 80%;
+	text-align:center;
+	height: 3em;
+	line-height: 3em;
+	font-size: 1em;
+	color:#353b48;
+	background: #dcdde1;
+	border:solid 1px #fff;
+	border-radius: 1.5em;
+	overflow: hidden;
+}
+.inputLine-Email{
+	width: 70%;
+	height: 100%;
+	line-height: 3em;
+	font-size: 1em;
+	color:#353b48;
+	background: inherit;
+	border:0;
+}
+.sendEmail{
+	width:30%;
+	font-size: 1em;
+	background: #718093;
+	border: 0;
+}
+.sendEmail-active{
+	background: #00a8ff;
+}
+.registerFormInfo{
+	width: 100%;
+	height: 1em;
+	line-height: 1em;
+	text-align: center;
+	font-size: 1em;
+	color:#c23616;
+}
 </style>
 
 <script>
-	import axios from 'axios'
 	export default{
 		data(){
-			// 邮箱验证
-			let checkEmail = async (rule,value,callback) =>{
-				if(value.length === 0){return callback(new Error('请输入您的邮箱'));}
-				//检查邮箱格式是否正确
-				let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
-				if(!reg.test(value)){
-					return callback(new Error('邮箱格式不正确'));
-				}
-				// 验证邮箱是否已经被注册
-				await axios.post(`checkEmail`,{email:value})
-				.then(result=>{
-					console.log(result.data.valid);
-					if(!result.data.valid){
-						return callback(new Error(`该邮箱已经被注册`));
-					}
-				}).catch(result=>{
-					console.log('nothing');
-				})
-				callback();
-			}
-			let checkUsername = async (rule,value,callback)=>{
-				//检测是否输入用户名
-				if(value.length === 0){return callback(new Error('请输入您的用户名'));}
-				//检测用户名长度是否合法
-				if(value.length>10){return callback(new Error('用户名长度不得大于10'))}
-				callback();
-			}
-			let checkPassword = (rule,value,callback)=>{
-				//检测是否输入密码
-				if(value.length === 0){return callback(new Error('请输入您的密码'));}
-				//检测密码长度是否符合要求
-				if(value.length < 6 || value.length >10){
-					return callback(new Error('密码长度在6与10之间'));
-				}
-				callback();
-			}
-			let checkConfirm = (rule,value,callback)=>{
-				//检测是否再次输入密码
-				if(value.length === 0){return callback(new Error('请再次输入您的密码'));}
-				//检测是否两次都输入相同的密码
-				if(value !== this.registerForm.password){
-					return callback(new Error('两次密码不一致'));
-				}
-				callback();
-			}
 			return{
-				registerForm:{
-					email:'',
-					username:'',
-					password:'',
-					confirmPassword:'',
-					verification:''
-				},
-				registerFormRule:{
-					email:[
-						{validator:checkEmail,trugger:'blur'}
-					],
-					username:[
-						{validator:checkUsername,trugger:'blur'}
-					],
-					password:[
-						{validator:checkPassword,trugger:'blur'}
-					],
-					confirmPassword:[
-						{validator:checkConfirm,trugger:'blur'}
-					]
-				}
+				email:'',
+				emailValid:false,
+				username:'',
+				usernameValid:false,
+				password:'',
+				passwordValid:false,
+				confirmPassword:'',
+				confirmPasswordValid:false,
+				verification:'',
+				verificationValid:false,
+				passwordVisiable:false,
+				registerInfo:'',
 			}
 		},
 		methods:{
-			sendEmail:async function(){
-				this.$refs.registerFormRef.validate(async(valid)=>{
-					//检测四项基本信息是否填写好
-					if(!valid){return this.$message.error('请先填写好您的信息!')};
-					await axios.post(`sendEmail`,{
-						email:this.registerForm.email
-					}).then(result=>{
-						console.log(result.data.valid);
-						if(result.data.valid){
-							this.$message.success('已经向您的邮箱发送验证码!')
-						}
-						else{
-							this.$message.error('很抱歉,发送失败!')
-						}
-					})
-					})
+			clearUsername:function(){
+				this.username = '';
+				this.usernameValid = false;
 			},
-			register:function(){
-				this.$refs.registerFormRef.validate(async(valid)=>{
-					//检测四项基本信息是否填写好
-					if(!valid){return this.$message.error('请按照要求填写有效信息!')};
-					//检测是否输入了验证码
-					if(!this.registerForm.verification){return this.$message.error('请输入您的邮箱验证码!')}
-					await this.$http.post('register',{
-						email:this.registerForm.email,
-						password:this.registerForm.password,
-						username:this.registerForm.username,
-						verification:this.registerForm.verification
-					})
-					.then((res)=>{
-						if(res.data.valid){
-							this.$message.success('注册成功');
-							//保存token值
-							window.sessionStorage.setItem('token',res.data.token);
-							//通过编程式导航跳转到后台主页,路由地址为home
-							this.$router.push(`/home/${this.registerForm.email}`);
-						}
-						else{
-							return this.$message.error('验证失败,请检查您的验证码');
-						}		
-					})
-					.catch((err)=>{
-						return this.$message.error('未能成功访问服务器,注册失败!');
-					})
+			clearPassword:function(){
+				this.password = '';
+				this.passwordValid = false;
+			},
+			clearConfirmPassword:function(){
+				this.confirmPassword = '';
+				this.confirmPasswordValid = false;
+			},
+			clearVerification:function(){
+				this.verification = '',
+				this.verificationValid = false;
+			},
+			checkEmail:async function(){
+				//清空警告框
+				this.rigisterInfo = '';
+				//未输入邮箱
+				if(!this.email){return;}
+				//验证格式
+				let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+				this.emailValid = (reg.test(this.email))?true:false;
+				this.registerInfo = this.emailValid?'':'邮箱格式有误';
+				if(!this.emailValid){return;}
+				//检验邮箱是否已经被注册
+				await this.$http.post(`checkEmail`,{
+					email:this.email,
+				})
+				.then(res=>{
+					this.emailValid = res.data.valid?true:false;
+					this.registerInfo = this.emailValid?'':'该邮箱已经被注册!';
+				})
+			},
+			usernameValidate:function(){
+				//清空警告框
+				this.rigisterInfo = '';
+				this.usernameValid = (this.username.length !== 0)?true:false;
+				this.registerInfo = this.usernameValid?'':'请输入您的用户名';
+			},
+			passwordValidate:function(){
+				//清空警告框
+				this.rigisterInfo = '';
+				let len = this.password.length;
+				this.passwordValid = (len >= 6 & len <= 10)?true:false;
+				this.registerInfo = this.passwordValid?'':'密码长度要求在6与10之间';
+			},
+			confirmPasswordValidate:function(){
+				//清空警告框
+				this.rigisterInfo = '';
+				this.confirmPasswordValid = (this.confirmPassword === this.password)?true:false;
+				this.registerInfo = this.confirmPasswordValid?'':'两次密码不一致';
+			},
+			verificationValidate:function(){
+				//清空警告框
+				this.rigisterInfo = '';
+				this.verificationValid = (this.verification)?true:false;
+				this.registerInfo = this.verificationValid?'':'请输入您的验证码'
+			},
+			changeVisiable:function(){
+				//清空警告框
+				this.rigisterInfo = '';
+				this.passwordVisiable = !(this.passwordVisiable)
+			},
+			sendEmail:async function(){
+				//密码格式验证通过才可以发送验证码
+				if(!this.emailValid){return;}
+				await this.$http.post(`sendEmail`,{
+					email:this.email
+				})
+			},
+			register:async function(){
+				let valid = (this.emailValid&this.usernameValid&this.passwordValid&this.confirmPasswordValid&this.verificationValid);
+				if(!valid){
+					this.registerInfo = "请检查您的信息是否填写完成";
+					return;
+				}
+				await this.$http.post(`register`,{
+					email:this.email,
+					username:this.username,
+					password:this.password,
+					verification:this.verification
+				})
+				.then(res=>{
+					if(res.data.valid){
+						//保存token值
+						window.sessionStorage.setItem('token',res.data.token);
+						//通过编程式导航跳转到后台主页,路由地址为home
+						this.$router.push(`/home/${this.email}`);
+					}
+				}).catch(err=>{
+					this.registerInfo = "验证码不匹配"
 				})
 			}
-		},
-		props:[]
+		}
 	}
 </script>

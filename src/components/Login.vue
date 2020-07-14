@@ -85,7 +85,7 @@
 		align-items: center;
 		justify-content: flex-start;
 		height: 100%;
-		background:#fff;
+		background:rgba(245, 246, 250,.8);
 	}
 
 	.loginBox{

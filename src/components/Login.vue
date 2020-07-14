@@ -57,7 +57,7 @@
 	.login-box {
 		width: 25%;
 		height: 100%;
-	    display: flex;
+		display: flex;
 	    flex-direction: column;
 	    align-items: center;
 	    justify-content: center;

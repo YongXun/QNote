@@ -14,17 +14,10 @@ export default {
 			window.addEventListener('beforeunload',()=>{
 			// sessionStorage.removeItem('token');
 			//解决H5键盘弹起webview缩小的问题,高度维持不变,被键盘遮住的内容隐藏起来.
-			const firstHeight = document.querySelector('.body').style.height;
-			window.onresize = ()=>{
-				let body = document.querySelector('.body');
-				if(body.style.height < firstHeight)
-				{
-					body.style.height = firstHeight;
-				}
-			}
-		});
+			});
 	 },
 	created(){
+		//移除加载动画
 		let loading = document.querySelector('.loading');
 		if(loading !== null){
 			document.body.removeChild(loading);

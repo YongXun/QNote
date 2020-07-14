@@ -129,7 +129,7 @@ export default{
 				//保存token值	
 				window.sessionStorage.setItem('token',res.data.token);
 				//通过编程式导航跳转到后台主页,路由地址为home
-				this.$router.push(`/home/${this.email}`);
+				this.$router.push(`/home`);
 			})
 			.catch(err=>{
 				this.loginInfo = `账号不存在或者密码错误!`;

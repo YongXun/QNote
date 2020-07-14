@@ -192,7 +192,7 @@
 						//保存token值
 						window.sessionStorage.setItem('token',res.data.token);
 						//通过编程式导航跳转到后台主页,路由地址为home
-						this.$router.push(`/home/${this.email}`);
+						this.$router.push(`/home`);
 					}
 				}).catch(err=>{
 					this.registerInfo = "验证码不匹配"

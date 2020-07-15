@@ -20,8 +20,24 @@
 				<i class="iconfont icon-cancel btnBack" @click="hideUser"></i>
 				<div class="userShow">
 					<header>
-						<span>用户名{{user.username}}</span>
+						<span>用户:{{user.username}}</span>
+						<br>
+						<span>邮箱:{{user.email}}</span>
 					</header>
+					<main>
+						<div class="qnoteShow">
+							<span>便签总数:{{user.noteNum}}</span>
+							<br>
+							<span>完成总数:{{user.completeNoteNum}}</span>
+							<br>
+							<span>放弃总数:{{user.giveUpNoteNum}}</span>
+							<br>
+							<span>界面不断优化中,敬请期待(ง •_•)ง</span>
+						</div>
+					</main>
+					<footer>
+						<span>QNoteLevel:{{qnoteLevel}}</span>
+					</footer>
 				</div>
 			</div>
 		</div>
@@ -35,7 +51,7 @@
 					<!-- 总览面板 -->
 					<div class="front">
 						<article class="todoList">
-							<section v-for="note in noteList" v-bind:key="note.noteID" :style="note.done?'background:#fbc531;':''">
+							<section v-for="note in noteList" v-bind:key="note.noteID" :style="note.done?'background:#e1b12c;':''">
 								<span class="noteContent">{{note.noteContent}}</span>
 								<div class="funBtn">
 									<i class="iconfont icon-chakan" @click="turnToBack(note)"></i>
@@ -91,6 +107,77 @@
 	width: 100%;
 	height: 100%;
 	background:rgba(47, 54, 64,.8);
+}
+
+.userShow{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 80%;
+	height:80%;
+}
+
+.userShow header{
+	padding: 5px;
+	width:100%;
+	height: 10%;
+	text-align: center;
+	background: rgba(225, 177, 44,.5);
+	border-radius: 10px;
+}
+
+.userShow main{
+	width: 100%;
+	height: 60%;
+	background: rgba(220, 221, 225,.5);
+	border-radius: 10px;
+}
+
+.userShow footer{
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 10%;
+	line-height: 100%;
+	background: rgba(194, 54, 22,.5);
+}
+
+.qnoteShow{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+.noteNumBar,.completeBar,.giveUpBar{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	width: 20%;
+	height: 50px;
+	background: #000;
+}
+
+.noteNumBar{
+	height:100%;
+	background: #00a8ff;
+}
+
+.completeBar{
+	background: #e1b12c;
+}
+
+.giveUpBar{
+	background: #c23616;
+}
+.qnoteLevel{
+	width: 100%;
+	height: 100%;
 }
 
 /* notePad */
@@ -291,7 +378,6 @@ import axios from 'axios'
 		mounted:function(){
 			this.getMessage();
 		},
-		props:['username'],
 		data(){
 			return{
 				token:sessionStorage.getItem('token'),
@@ -311,6 +397,7 @@ import axios from 'axios'
 					done:false
 				},
 				inputInfo:'',
+				qnoteLevel:'平平无奇'
 			}
 		},
 		methods:{
@@ -321,6 +408,7 @@ import axios from 'axios'
 				}).then(res=>{
 					//访问成功,接受数据
 					if(res.status === 200){
+						console.log(res.data.user)
 						//复制对象
 						Object.assign(this.user,res.data.user);
 						res.data.note.forEach((value)=>{
@@ -331,6 +419,27 @@ import axios from 'axios'
 					console.log(err)
 					this.$message.error(`访问服务器失败!`)
 				})
+				let count = (this.user.completeNoteNum)/(this.user.noteNum);
+				if(this.user.noteNum > 5){
+					if(count === 0){
+						this.qnoteLevel = "一事无成";
+					}
+					else if(count < 0.25){
+						this.qnoteLevel = "还得努力";
+					}
+					else if(count < 0.5){
+						this.qnoteLevel = "平平无奇";
+					}
+					else if(count < 0.75 ){
+						this.qnoteLevel = "言出必行";
+					}
+					else if(count < 1){
+						this.qnoteLevel = "锋芒毕露";
+					}
+					else{
+						this.qnoteLevel = "坚毅如刚";
+					}
+				}
 			},
 			addNote:async function(){
 				//获取用户输入信息
@@ -347,7 +456,6 @@ import axios from 'axios'
 					this.noteList.push({noteID,noteContent,noteRemark});
 					this.user.noteNum++;
 					this.user.currentNoteNum++;
-					this.$message.success('添加成功!')
 				}).catch(err=>{
 					this.$message.error('请输入有效信息!');
 				})
@@ -362,7 +470,7 @@ import axios from 'axios'
 				console.log(this.noteList)
 				//修改数据库
 				await this.$http.post(`note/completeTask`,{
-					token: this.token,
+					token:this.token,
 					username:this.user.username,
 					noteID:noteID
 				})
@@ -371,13 +479,13 @@ import axios from 'axios'
 					this.noteList.forEach((value,index,arr)=>{
 						if(value.noteID === noteID){
 							arr[index].done = true;
-							//刷新视图
-							this.$forceUpdate(); 
 						}
 					})
 					this.completeNoteNum++;
 					this.currentNoteNum--;
 				})
+				//刷新视图
+				this.$forceUpdate(); 
 			},
 			deleteNote:async function(note){
 				//事务已经完成,删除事务
@@ -395,7 +503,7 @@ import axios from 'axios'
 								arr.splice(index,1);
 							}
 						})
-					})					
+					})			
 				}
 				//事务尚未完成,放弃事务
 				else{
@@ -414,6 +522,8 @@ import axios from 'axios'
 					this.giveUpNoteNum++;
 					this.currentNoteNum--;
 				}
+				//刷新视图
+				this.$forceUpdate(); 
 			},
 			move:function(){
 				document.querySelector('.welcome-page').style.top = '-100%';
@@ -458,6 +568,32 @@ import axios from 'axios'
 					this.inputInfo = "备注内容50字内有效"
 				}
 				input.value = input.value.slice(0,50);
+			},
+			draw:function(){
+				let canvas = document.querySelector('.qnoteShow');
+				let ctx = canvas.getContext("2d");
+				let width = canvas.offsetWidth;
+				let height = canvas.offsetHeight;
+				
+				let count = 20;
+				var length = height / count;
+				let interval;
+				let now_count = 0;
+				let x = 100 , y = 400
+				interval = setInterval(function () {
+					if (now_count >= count) {
+						clearInterval(interval);
+						return;
+					} else {
+						ctx.beginPath();
+						ctx.moveTo(x, y + 1); // y+1解决绘画后会出现分段的问题
+						ctx.lineTo(x, y - length);
+						ctx.strokeStyle = '#fff';
+						ctx.stroke();
+						y -= length;
+						now_count++;
+					}
+				}, 25);
 			}
 	}
 }

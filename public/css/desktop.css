@@ -177,8 +177,22 @@ input {
 }
 
 .inputNote {
-    margin: auto 0;
+    position: absolute;
+    top: 30%;
     width: 60%;
+}
+
+.inputNoteContent {
+    width: 80%;
+}
+
+.inputNoteRemark {
+    height: 20%;
+}
+
+.inputSubmit {
+    margin: 20px auto;
+    text-align: center;
 }
 
 

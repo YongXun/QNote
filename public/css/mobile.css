@@ -89,7 +89,12 @@
 }
 
 .inputNote {
+    top: 50px;
     width: 100%;
+}
+
+.inputNoteRemark {
+    height: 100px;
 }
 
 

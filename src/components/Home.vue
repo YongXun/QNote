@@ -5,10 +5,12 @@
 			<div class="notePadWrap">	
 				<i class="iconfont icon-cancel btnBack" @click="hideNotePad"></i>
 				<div class="inputNote">
-						<input type="text" name="noteContent" class="inputNoteContent" placeholder="就是现在,立下你的小目标吧!"> 
+						<input @keyup="checkInputContent" type="text" name="noteContent" class="inputNoteContent" placeholder="输入便签"> 
 						<h3>备注</h3>
-						<textarea rows="10" cols="30" class="inputNoteRemark" placeholder="50字内有效"></textarea>
-						<button class="inputSubmit" @click="addNote">提交</button>
+						<textarea @keyup="checkInputRemark" rows="10" cols="30" class="inputNoteRemark" placeholder="50字内有效"></textarea>
+						<br>
+						<span class="inputInfo">{{inputInfo}}</span>
+						<div class="inputSubmit" @click="addNote">提交</div>
 				</div>
 			</div>
 		</div>
@@ -21,21 +23,9 @@
 						<span>用户名{{user.username}}</span>
 					</header>
 				</div>
-				<!-- 头像区域 -->
-				
-				<!-- <span>用户名{{user.username}}</span>
-				<span>邮箱{{user.email}}</span> -->
 			</div>
 		</div>
 		<div class="homeContainer">
-			<div class="messageArea">
-				<div class="userMessage">
-					<h2>用户信息</h2>
-				</div>
-				<div class="art">
-					<h2>动画展示</h2>
-				</div>
-			</div>
 			<div class="workArea">
 				<div class="btnBox">
 					<i class="iconfont icon-jia btnAdd" @click="showNotePad"></i>
@@ -49,7 +39,7 @@
 								<span class="noteContent">{{note.noteContent}}</span>
 								<div class="funBtn">
 									<i class="iconfont icon-chakan" @click="turnToBack(note)"></i>
-									<i :class="note.done?'':'iconfont icon-check'" @click="completeNote(note.noteID)"></i>
+									<i :class="{'iconfont':true,'icon-check':!note.done}" @click="completeNote(note.noteID)"></i>
 									<i class="iconfont icon-trash" @click="deleteNote(note)"></i>
 								</div>
 							</section>
@@ -122,35 +112,36 @@
 	background:rgba(47, 54, 64,.8);
 }
 .inputNote{
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-	align-items: center;
 	height: 60%;
 }
 .inputNoteContent,.inputNoteRemark{
 	background: inherit;
 }
 .inputNoteContent{
-	width: 80%;
 	font-size:1.5em ;
 	border: 0;
 	border-bottom:solid 3px #fff ;
 }
 .inputNoteRemark{
 	width: 80%;
-	height: 20%;
 	font-size: 1.5em;
 	border: solid 2px #fff;
 	border-radius:10px ;
 	padding: 10px;
 	resize: none;
 }
+.inputInfo{
+	width: 100%;
+	color:#c23616;
+}
 .inputSubmit{
 	width: 100px;
 	height: 50px;
+	line-height: 50px;
+	font-size: 1.5em;
 	background: inherit;
-	border-radius: solid 1px #fff;
+	border-radius: 25px;
+	border: solid 2px #fff;
 }
 .inputSubmit:hover{
 	background: rgba(127, 143, 166,1.0);
@@ -163,35 +154,12 @@
 	background: rgba(47, 54, 64,.6);
 }
 
-/* messageArea */
-.messageArea{
-	display: none;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 30%;
-	height: 100%;
-}
-
-.userMessage{
-	width:100%;
-	height: 40%;
-	border: solid 1px #fff;
-}
-
-.art{
-	width: 100%;
-	height: 60%;
-	border: solid 1px #fff;
-}
-
 /* wordArea */
 .workArea{
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-	border: solid 1px #fff;
 	overflow: hidden;
 }
 
@@ -201,6 +169,7 @@
 	justify-content: space-between;
 	width: 100%;
 	height: 10%;
+	background: rgba(220, 221, 225,.5);
 }
 
 .btnShow,.btnAdd{
@@ -218,7 +187,6 @@
 	overflow: hidden;
 	width: 200%;
 	height: 90%;
-	border: solid 1px #fff;
 	transition: .5s linear;
 }
 
@@ -249,11 +217,15 @@
 	justify-content: space-between;
 	width: 100%;
 	height: 50px;
-	font-size: 2em;
 	line-height: 50px;
 	margin:10px 0;
 	padding:0 10px;
-	border: solid 1px #fff;
+	background: rgba(220, 221, 225,.5);
+}
+
+.noteContent{
+	font-size: 1.5em;
+	overflow: hidden;
 }
 
 .todoList section .funBtn{
@@ -261,6 +233,7 @@
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	margin-left:10px;
 	width: 20%;
 	height:50px;
 	font-size: 50px;
@@ -336,7 +309,8 @@ import axios from 'axios'
 					noteContent:'',
 					noteRemark:'',
 					done:false
-				}
+				},
+				inputInfo:'',
 			}
 		},
 		methods:{
@@ -380,8 +354,12 @@ import axios from 'axios'
 				//输入框重置
 				document.querySelector('.inputNoteContent').value = '';
 				document.querySelector('.inputNoteRemark').value = '';
+				let notePad = document.querySelector('.notePad');
+				notePad.style.left = '-100%';
+				console.log(this.noteList);
 			},
 			completeNote:async function(noteID){
+				console.log(this.noteList)
 				//修改数据库
 				await this.$http.post(`note/completeTask`,{
 					token: this.token,
@@ -390,9 +368,11 @@ import axios from 'axios'
 				})
 				.then(res=>{
 					//修改本地数据
-					this.noteList.forEach(value=>{
+					this.noteList.forEach((value,index,arr)=>{
 						if(value.noteID === noteID){
-							value.done = true;
+							arr[index].done = true;
+							//刷新视图
+							this.$forceUpdate(); 
 						}
 					})
 					this.completeNoteNum++;
@@ -400,7 +380,6 @@ import axios from 'axios'
 				})
 			},
 			deleteNote:async function(note){
-				console.log(note.done)
 				//事务已经完成,删除事务
 				if(note.done){
 					//修改数据库
@@ -413,7 +392,6 @@ import axios from 'axios'
 						//修改本地数据
 						this.noteList.forEach((value,index,arr)=>{
 							if(value.noteID === note.noteID){
-								console.log(1)
 								arr.splice(index,1);
 							}
 						})
@@ -429,7 +407,6 @@ import axios from 'axios'
 					.then(res=>{
 						this.noteList.forEach((value,index,arr)=>{
 							if(value.noteID === note.noteID){
-								console.log(2);
 								arr.splice(index,1);
 							}
 						})
@@ -466,6 +443,22 @@ import axios from 'axios'
 				let notePad = document.querySelector('.notePad');
 				notePad.style.left = '-100%';
 			},
+			checkInputContent:function(){
+				this.inputInfo = '';
+				let input = document.querySelector('.inputNoteContent');
+				if(input.value.length > 10){
+					this.inputInfo = "标签标题长度不可以大于10"
+				}
+				input.value = input.value.slice(0,10);
+			},
+			checkInputRemark:function(){
+				this.inputInfo = '';
+				let input = document.querySelector('.inputNoteRemark');
+				if(input.value.length > 50){
+					this.inputInfo = "备注内容50字内有效"
+				}
+				input.value = input.value.slice(0,50);
+			}
 	}
 }
 </script>

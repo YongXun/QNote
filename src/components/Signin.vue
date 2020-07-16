@@ -3,7 +3,7 @@
 		<main>
 			<div class="inputBar inputEmail">
 				<i class="icon iconfont icon-tubiao209"></i>
-				<input v-model="email" @keyup="emailValidate" class="inputLine " type="text" placeholder="请输入您的邮箱" autocomplete="false">
+				<input v-model="email" @keyup="emailValidate" class="inputLine " type="text" placeholder="请输入您的邮箱" autocomplete="off">
 				<i class="icon iconfont icon-qingchu1" @click="clearEmail"></i>
 			</div>
 			<br>

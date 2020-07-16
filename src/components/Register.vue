@@ -3,13 +3,13 @@
 		<main>
 			<!-- 邮箱 -->
 			<div class="inputEmail">
-				<input v-model="email" @blur="checkEmail" class="inputLine-Email" type="text" placeholder="请输入您的邮箱" autocomplete="false">
+				<input v-model="email" @blur="checkEmail" class="inputLine-Email" type="text" placeholder="请输入您的邮箱" autocomplete="off">
 				<button :class="{'sendEmail':true,'sendEmail-active':emailValid}" @click="sendEmail">发送验证</button>
 			</div>
 			<!-- 用户名 -->
 			<div class="inputBar inputUsername">
 				<i class="icon iconfont icon-dingbudaohang-zhangh"></i>
-				<input v-model="username" @keyup="usernameValidate" class="inputLine " type="text" placeholder="请输入您的用户名" autocomplete="false">
+				<input v-model="username" @keyup="usernameValidate" class="inputLine " type="text" placeholder="请输入您的用户名" autocomplete="off">
 				<i class="icon iconfont icon-qingchu1" @click="clearUsername"></i>
 			</div>
 			<!-- 密码 -->
@@ -27,7 +27,7 @@
 			<!-- 验证码 -->
 			<div class="inputBar inputVerification">
 				<i @click="changeVisiable" class="icon iconfont icon-yanzhengma"></i>
-				<input v-model="verification" @keyup="verificationValidate" class="inputLine "  :type="passwordVisiable?'text':'password'" placeholder="请输入您的验证码">
+				<input v-model="verification" @keyup="verificationValidate" class="inputLine "  :type="passwordVisiable?'text':'password'" placeholder="请输入您的验证码" autocomplete="off">
 				<i class="icon iconfont icon-qingchu1"  @click="clearVerification"></i>
 			</div>
 			<footer>

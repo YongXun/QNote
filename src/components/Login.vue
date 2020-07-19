@@ -2,9 +2,9 @@
 	<div class="wrapper">
 		<div class="leftAside">
 			<div class="outer">
-				<span class="motto">{{motto.hitokoto}}</span>
+				<span class="motto" v-cloak>{{motto.hitokoto}}</span>
 				<br>
-				<span class="mottoFrom">{{`——${motto.from_who?motto.from_who:''}《${motto.from}》`}}</span>
+				<span class="mottoFrom" v-cloak>{{`——${motto.from_who?motto.from_who:''}《${motto.from}》`}}</span>
 				<div class="hideMottoBtn" @click="hideMotto">进入QNote</div>
 			</div>
 		</div>
@@ -35,7 +35,11 @@
 		},
 		data(){
 			return{
-				motto:'会有那么一天!'
+				motto:{
+					hitokoto:"会有那么一天",
+					from_who:'',
+					from:'原创'
+				}
 			}
 		},
 		methods:{
@@ -50,6 +54,9 @@
 	}
 </script>
 <style>
+[v-cloak]{
+	display:none;
+}
 	.wrapper {
 		display: flex;
 		flex-direction: row;

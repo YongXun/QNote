@@ -113,6 +113,7 @@ input {
 
 .wrapper {
     background: url(../img/bg-desktop.jpg) center no-repeat;
+    background-size: 100%;
 }
 
 .rightAside {
